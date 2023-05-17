@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useMemo, useReducer } from 'react';
 import './App.css';
+import { AppContext } from './store/context';
+import { AppReducer, initialState } from './store/reducer';
 
 function App() {
+  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const contextValue = useMemo(() => {
+    return { state, dispatch };
+  }, [state, dispatch]);
   return (
-    <div className="App">
-      <header className="App-header"></header>
-    </div>
+    <React.StrictMode>
+      <AppContext.Provider value={contextValue}></AppContext.Provider>
+    </React.StrictMode>
   );
 }
 
