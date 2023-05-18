@@ -3,6 +3,7 @@ body {
   font-family: 'Inter';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
 code {
@@ -13,4 +14,5 @@ code {
   max-width: 1440px;
   box-sizing: border-box;
   margin: 0 auto;
+  height: 100%;
 }

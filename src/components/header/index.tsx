@@ -1,18 +1,16 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useContext, useCallback } from 'react';
 import './index.css';
 import logo from '../../assets/logo.svg';
 import { Link } from 'react-router-dom';
-import { AppReducer } from '../../store/reducer';
+
 import { AppContext } from '../../store/context';
-import { ActionType, StateActions } from '../../types';
+import { ActionType } from '../../types';
 
 export const Header = () => {
   const { state, dispatch } = useContext(AppContext);
-  console.log(state.activeLink);
 
   const onLinkClick = useCallback(
     (link: string) => {
-      console.log(link);
       dispatch({
         type: ActionType.SetActiveLink,
         payload: { activeLink: link },
