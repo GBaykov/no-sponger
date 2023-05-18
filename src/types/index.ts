@@ -3,12 +3,14 @@ export type AppState = {
   to: string;
   searhWord: string;
   field: string;
+  activeLink: string;
 };
 export enum ActionType {
   SetTo,
   SetFrom,
   SetSearchWord,
   SetField,
+  SetActiveLink,
 }
 export interface SetTo {
   type: ActionType.SetTo;
@@ -26,4 +28,8 @@ export interface SetField {
   type: ActionType.SetField;
   payload: { field: string };
 }
-export type StateActions = SetTo | SetFrom | SetSearchWord | SetField;
+export interface SetActiveLink {
+  type: ActionType.SetActiveLink;
+  payload: { activeLink: string };
+}
+export type StateActions = SetTo | SetFrom | SetSearchWord | SetField | SetActiveLink;

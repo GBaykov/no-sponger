@@ -1,11 +1,12 @@
 import React from 'react';
-import { ActionType, AppState, StateActions } from '../styles';
+import { ActionType, AppState, StateActions } from '../types';
 
 export const initialState: AppState = {
   from: '',
   to: '',
   searhWord: '',
   field: '',
+  activeLink: 'main',
 };
 
 export function AppReducer(state: AppState, action: StateActions): AppState {
@@ -13,11 +14,13 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
     case ActionType.SetFrom:
       return { ...state, from: action.payload.from };
     case ActionType.SetTo:
-      return { ...state, from: action.payload.to };
+      return { ...state, to: action.payload.to };
     case ActionType.SetField:
-      return { ...state, from: action.payload.field };
+      return { ...state, field: action.payload.field };
     case ActionType.SetSearchWord:
-      return { ...state, from: action.payload.searhWord };
+      return { ...state, searhWord: action.payload.searhWord };
+    case ActionType.SetActiveLink:
+      return { ...state, activeLink: action.payload.activeLink };
     default:
       return state;
   }
