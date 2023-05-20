@@ -3,7 +3,8 @@
   width: 100%;
   max-width: 1440px;
   padding: 24px 162px;
-  background-color: #ffffff;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
 }
 
 @media (max-width: 910px) {

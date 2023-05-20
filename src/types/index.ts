@@ -2,7 +2,7 @@ export type AppState = {
   from: string;
   to: string;
   searhWord: string;
-  field: string;
+  branch: string;
   activeLink: string;
 };
 export enum ActionType {
@@ -26,7 +26,7 @@ export interface SetSearchWord {
 }
 export interface SetField {
   type: ActionType.SetField;
-  payload: { field: string };
+  payload: { branch: string };
 }
 export interface SetActiveLink {
   type: ActionType.SetActiveLink;

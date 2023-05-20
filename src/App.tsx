@@ -10,11 +10,9 @@ function App() {
     return { state, dispatch };
   }, [state, dispatch]);
   return (
-    <React.StrictMode>
-      <AppContext.Provider value={contextValue}>
-        <Router />
-      </AppContext.Provider>
-    </React.StrictMode>
+    <AppContext.Provider value={contextValue}>
+      <Router />
+    </AppContext.Provider>
   );
 }
 
