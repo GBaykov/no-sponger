@@ -1,8 +1,9 @@
 import react from 'react';
 import './index.css';
 import { Card } from '../card';
+import { CardType } from '../../types';
 
-const cardData = {
+const cardData: CardType = {
   profession: 'Ведущий графический дизайнер НЕ УДАЛЕННО',
   town: 'Москва',
   type_of_work: 'Полный рабочий день',
@@ -12,7 +13,10 @@ const cardData = {
 export const CardList = () => {
   return (
     <section className="card-list">
-      <Card {...cardData} />
+      {/* {cards&& cards.map((card)=>{
+        <Card {...card} />
+      })}
+       */}
       <Card {...cardData} />
       <Card {...cardData} />
       <Card {...cardData} />

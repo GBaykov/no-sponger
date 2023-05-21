@@ -9,6 +9,8 @@ import { ActionType } from '../../types';
 
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
+  console.log(new Date());
+  console.log(new Date(1394748311));
 
   const form = useForm<{
     branch: string;

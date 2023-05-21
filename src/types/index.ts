@@ -4,6 +4,7 @@ export type AppState = {
   searhWord: string;
   branch: string;
   activeLink: string;
+  currentPage: number;
 };
 export enum ActionType {
   SetTo,
@@ -11,6 +12,7 @@ export enum ActionType {
   SetSearchWord,
   SetField,
   SetActiveLink,
+  SetCurrentPage,
 }
 export interface SetTo {
   type: ActionType.SetTo;
@@ -32,4 +34,21 @@ export interface SetActiveLink {
   type: ActionType.SetActiveLink;
   payload: { activeLink: string };
 }
-export type StateActions = SetTo | SetFrom | SetSearchWord | SetField | SetActiveLink;
+export interface SetCurrentPage {
+  type: ActionType.SetCurrentPage;
+  payload: { currentPage: number };
+}
+export type StateActions =
+  | SetTo
+  | SetFrom
+  | SetSearchWord
+  | SetField
+  | SetActiveLink
+  | SetCurrentPage;
+
+export type CardType = {
+  profession: string;
+  town: string;
+  type_of_work: string;
+  payment_from: number;
+};
