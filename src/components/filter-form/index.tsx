@@ -1,16 +1,6 @@
 import React, { useContext, useCallback, SyntheticEvent } from 'react';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import './index.css';
-import {
-  TextInput,
-  Checkbox,
-  Button,
-  Group,
-  Box,
-  Select,
-  MultiSelect,
-  NumberInput,
-} from '@mantine/core';
+import { Button, Group, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import cross from '../../assets/cross.svg';
 import arrowDown from '../../assets/down-errow.svg';
@@ -20,12 +10,15 @@ import { ActionType } from '../../types';
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
 
-  const form = useForm({
+  const form = useForm<{
+    branch: string;
+    from: number | '' | undefined;
+    to: number | '' | undefined;
+  }>({
     initialValues: {
       branch: '',
-      from: 0,
-      to: 0,
-      termsOfService: false,
+      from: '',
+      to: '',
     },
 
     validate: {},
