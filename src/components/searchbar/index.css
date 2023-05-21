@@ -23,9 +23,6 @@
   height: 12.5px;
 }
 
-.searhbar-wrap {
-}
-
 .searchbar-input {
   outline: #ffffff;
   border: none;
@@ -51,4 +48,8 @@ input::placeholder {
   border-radius: 8px;
   border: none;
   cursor: pointer;
+}
+
+.searchbar-btn:active {
+  background-color: #1f69f1;
 }
