@@ -152,6 +152,7 @@ export const FilterForm = () => {
             w="100%"
             h={42}
             type="submit"
+            bg="#5E96FC"
             styles={{
               label: { fontFamily: 'Inter', fontWeight: 'normal', fontSize: '14px' },
               root: { borderRadius: '8px' },

@@ -33,7 +33,7 @@ export const Card = ({
     <div className="card">
       <div className="card__content">
         <div className="content__head ">
-          <p className="head-title">{profession}</p>
+          <p className="card__head-title">{profession}</p>
           <img
             onClick={(e) => onStarClick(e)}
             src={isChosen ? star : emptyStar}
@@ -53,7 +53,7 @@ export const Card = ({
           <img src={dot} alt="dot" className="dot" />
           <p className="info-typeofwork card-text">{type_of_work}</p>
         </div>
-        <div className="content__location ">
+        <div className="card__content-location ">
           <img src={location} alt="location" className="location-icon" />
           <p className="card-text">{town}</p>
         </div>
