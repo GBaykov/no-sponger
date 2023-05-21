@@ -1,0 +1,35 @@
+.card {
+  width: 100%;
+  max-width: 773px;
+  background: #ffffff;
+  border: 1px solid #eaebed;
+  border-radius: 12px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.card__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.content__head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content__info {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.content__location {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.card__head-star {
+  cursor: pointer;
+}

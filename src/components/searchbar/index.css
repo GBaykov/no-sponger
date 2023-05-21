@@ -10,7 +10,7 @@
   align-items: center;
   padding: 0px 12px;
   gap: 10px;
-  width: 773px;
+  max-width: 773px;
   height: 48px;
   background: #ffffff;
   border: 1px solid #eaebed;
