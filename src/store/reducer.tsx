@@ -8,6 +8,7 @@ export const initialState: AppState = {
   branch: '',
   activeLink: '/',
   currentPage: 1,
+  logInData: null,
 };
 
 export function AppReducer(state: AppState, action: StateActions): AppState {
@@ -24,6 +25,8 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
       return { ...state, activeLink: action.payload.activeLink };
     case ActionType.SetCurrentPage:
       return { ...state, currentPage: action.payload.currentPage };
+    case ActionType.SetlogInData:
+      return { ...state, logInData: action.payload.logInData };
     default:
       return state;
   }
