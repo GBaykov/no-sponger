@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-import './spinner.css';
+import './index.css';
 
-const Spinner = () => {
+export const Spinner: FC = () => {
   return (
     <div className="loadingio-spinner-dual-ring-fbc1fubm9n">
       <div className="ldio-03tjcleqsehl">
@@ -14,5 +14,3 @@ const Spinner = () => {
     </div>
   );
 };
-
-export default Spinner;

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AppContext } from '../../store/context';
-import Spinner from '../spinner';
+import { Spinner } from '../spinner';
 import { ActionType, CardType } from '../../types';
 import { Card } from '../card';
 

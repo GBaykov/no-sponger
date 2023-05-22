@@ -17,10 +17,8 @@ export const Searchbar = () => {
 
   function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(state);
   }
 
-  console.log(state.searhWord);
   return (
     <form className="searchbar-form" onSubmit={(e) => onFormSubmit(e)}>
       <div className="searchbar">

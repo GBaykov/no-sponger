@@ -5,9 +5,10 @@ import { AppReducer, initialState } from './store/reducer';
 import { Router } from './router';
 import { Refresh_token, log_in } from './services/Api';
 import { async } from 'q';
-import { ActionType } from './types';
+import { ActionType, LogInResponse } from './types';
 import useComponentDidMount from './hooks/useComponentDidMount';
-import { setToStorage } from './utils/localstorage';
+import { getFromStorage, setToStorage } from './utils/localstorage';
+import { Spinner } from './components/spinner';
 
 function App() {
   const [state, dispatch] = useReducer(AppReducer, initialState);
@@ -16,14 +17,37 @@ function App() {
   }, [state, dispatch]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorText, setErrorText] = useState('');
 
   const isComponentMounted = useComponentDidMount();
+
+  const logInStoraged = getFromStorage('logInResp');
 
   const setAccessData = async () => {
     try {
       setIsLoading(true);
-      const now = new Date();
-      if (!state.logInData?.access_token || state.logInData === null) {
+      if (logInStoraged) {
+        const storageData = JSON.parse(logInStoraged) as LogInResponse;
+        if (!storageData.access_token) {
+          const logInResp = await log_in();
+          dispatch({
+            type: ActionType.SetlogInData,
+            payload: { logInData: logInResp },
+          });
+          setToStorage('logInResp', JSON.stringify(logInResp));
+          setIsLoading(false);
+          setIsError(false);
+        }
+        if (storageData.ttl < Date.now() / 1000) {
+          const freshData = await Refresh_token();
+          dispatch({
+            type: ActionType.SetlogInData,
+            payload: { logInData: freshData },
+          });
+          setIsLoading(false);
+          setIsError(false);
+        }
+      } else {
         const logInResp = await log_in();
         dispatch({
           type: ActionType.SetlogInData,
@@ -33,24 +57,23 @@ function App() {
         setIsLoading(false);
         setIsError(false);
       }
-      if (state.logInData?.ttl && new Date(state.logInData?.ttl) > new Date()) {
-        const freshData = await Refresh_token();
-        dispatch({
-          type: ActionType.SetlogInData,
-          payload: { logInData: freshData },
-        });
-        setIsLoading(false);
-        setIsError(false);
-      }
-    } catch {
+    } catch (err) {
       setIsLoading(false);
       setIsError(true);
+      setErrorText(err as string);
     }
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (isComponentMounted) {
+      setAccessData();
+    }
+  }, [isComponentMounted]);
 
   return (
     <AppContext.Provider value={contextValue}>
-      <Router />
+      {isLoading ? <Spinner /> : <Router />}
     </AppContext.Provider>
   );
 }

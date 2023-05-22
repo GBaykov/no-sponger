@@ -75,3 +75,7 @@ export type LogInResponse = {
   expires_in: number;
   token_type: string;
 };
+
+export type ErrorResponse = {
+  error: { code: number; message: string; error: string };
+};

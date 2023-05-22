@@ -9,8 +9,6 @@ import { ActionType } from '../../types';
 
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
-  console.log(new Date());
-  console.log(new Date(1394748311));
 
   const form = useForm<{
     branch: string;
@@ -27,7 +25,6 @@ export const FilterForm = () => {
   });
 
   const onInputSelect = (e: SyntheticEvent<HTMLInputElement>) => {
-    console.log(e);
     if (e) {
       dispatch({ type: ActionType.SetField, payload: { branch: e.currentTarget.value } });
       form.setFieldValue('branch', e.currentTarget.value);
@@ -62,7 +59,7 @@ export const FilterForm = () => {
     },
     [state.from, state.to, dispatch],
   );
-  console.log(form.values);
+
   return (
     <section className="form-block">
       <form onSubmit={form.onSubmit((values) => console.log(values))} onReset={form.onReset}>
