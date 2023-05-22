@@ -59,29 +59,49 @@ export const Refresh_token = async () => {
   }
 };
 
-// export const fetchVacancies = async () => {
-//     try {
-//       const response = await axios.get<LogInResponse>(
-//         `${API_URL}/2.0/vacancies/`,
-//         refreshRequest_data,
-//       );
-//       return response.data;
-//     } catch (err) {
-//       const { error } = err as ErrorResponse;
-
-//       throw new Error(`${error.message} with code ${error.code}`);
-//     }
-//   };
-
 export const fetchCatalogues = async () => {
   try {
     const response = await axios.get<CataloguesResponse>(`${API_URL}/2.0/catalogues/`, {
       headers: {
         'x-secret-key': secretKey,
         'X-Api-App-Id': client_secret,
-        access_token: access_token,
+        access_token,
       },
     });
+    return response.data;
+  } catch (err) {
+    const { error } = err as ErrorResponse;
+
+    throw new Error(`${error.message} with code ${error.code}`);
+  }
+};
+
+export const fetchVacancies = async (
+  keyword: string,
+  payment_from?: number,
+  payment_to?: number,
+  no_agreement = 1,
+  catalogues?: number,
+) => {
+  const vacanciesRequestData = {
+    params: {
+      keyword,
+      payment_from,
+      payment_to,
+      catalogues,
+      no_agreement: 1,
+    },
+    headers: {
+      'x-secret-key': secretKey,
+      'X-Api-App-Id': client_secret,
+      access_token,
+    },
+  };
+  try {
+    const response = await axios.get<CataloguesResponse>(
+      `${API_URL}/2.0/vacancies/`,
+      vacanciesRequestData,
+    );
     return response.data;
   } catch (err) {
     const { error } = err as ErrorResponse;

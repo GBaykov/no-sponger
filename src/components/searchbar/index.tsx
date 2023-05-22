@@ -4,6 +4,7 @@ import { Button } from '@mantine/core';
 import search from '../../assets/search1.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
+import { fetchVacancies } from '../../services/Api';
 
 export const Searchbar = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -17,6 +18,12 @@ export const Searchbar = () => {
 
   function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const keyword = state.searhWord;
+    const payment_from = +state.from;
+    const payment_to = +state.to;
+    const catalogue = state.catalogue;
+
+    const vacancies = fetchVacancies(keyword, payment_from, payment_to);
   }
 
   return (

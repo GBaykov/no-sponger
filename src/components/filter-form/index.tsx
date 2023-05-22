@@ -18,6 +18,7 @@ export const FilterForm = () => {
   const [isError, setIsError] = useState(false);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [selectData, setSelectData] = useState<any>(null);
+  const [currentCatalogue, setCurrentCatalogue] = useState('');
 
   const form = useForm<{
     catalogue: string;
@@ -41,14 +42,17 @@ export const FilterForm = () => {
   // };
 
   const onInputChange = useCallback(
-    (e: number | string | null, type: string) => {
+    (e: number | string | null, type: string, catalogue?: string) => {
       if (e) {
         if (type === 'catalogue') {
           dispatch({
             type: ActionType.SetCatalogue,
-            payload: { catalogue: String(e) },
+            payload: { catalogue: String(e).split(' ')[0] },
           });
-          form.setFieldValue('catalogue', String(e));
+          console.log(String(e).split(' ')[1]);
+          form.setFieldValue('catalogue', String(e).split(' ')[1]);
+
+          setCurrentCatalogue(String(e).split(' ')[1]);
         }
         if (type === 'from') {
           dispatch({
@@ -93,7 +97,11 @@ export const FilterForm = () => {
     setIsLoading(true);
     if (catalogues !== null) {
       const filterSelectData = catalogues?.map((catalogue) => {
-        const cata = { value: catalogue.title_rus, label: catalogue.title_rus, key: catalogue.key };
+        const cata = {
+          value: catalogue.key + ' ' + catalogue.title_rus,
+          label: catalogue.title_rus,
+          key: catalogue.key,
+        };
         return cata;
       });
       setSelectData(filterSelectData);
