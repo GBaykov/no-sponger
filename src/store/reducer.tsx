@@ -5,7 +5,7 @@ export const initialState: AppState = {
   from: '',
   to: '',
   searhWord: '',
-  branch: '',
+  catalogue: '',
   activeLink: '/',
   currentPage: 1,
   logInData: null,
@@ -17,8 +17,8 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
       return { ...state, from: action.payload.from };
     case ActionType.SetTo:
       return { ...state, to: action.payload.to };
-    case ActionType.SetField:
-      return { ...state, branch: action.payload.branch };
+    case ActionType.SetCatalogue:
+      return { ...state, catalogue: action.payload.catalogue };
     case ActionType.SetSearchWord:
       return { ...state, searhWord: action.payload.searhWord };
     case ActionType.SetActiveLink:

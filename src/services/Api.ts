@@ -2,15 +2,9 @@ import React from 'react';
 import { API_URL, login, password, client_id, client_secret, hr, secretKey } from '../constants';
 import axios from 'axios';
 import { number } from 'yargs';
-import { ErrorResponse, LogInResponse } from '../types';
+import { CataloguesResponse, ErrorResponse, LogInResponse } from '../types';
 import { getFromStorage } from '../utils/localstorage';
 
-// const log_in = async () => {
-//   const response = await axios.get(
-//     `${API_URL}/2.0/oauth2/password/?login=${login}&password=${password}&client_id=${client_id}&client_secret=${client_secret}&hr=${hr}`,
-//   );
-//   return response.data;
-// };
 const data = {
   params: {
     login,
@@ -37,6 +31,7 @@ export const log_in = async () => {
 };
 const access_resp = getFromStorage('logInResp');
 const refresh_token: string = access_resp !== null ? JSON.parse(access_resp).refresh_token : '';
+const access_token: string = access_resp !== null ? JSON.parse(access_resp).access_token : '';
 
 const refreshRequest_data = {
   params: {
@@ -56,6 +51,37 @@ export const Refresh_token = async () => {
       `${API_URL}/2.0/oauth2/refresh_token/`,
       refreshRequest_data,
     );
+    return response.data;
+  } catch (err) {
+    const { error } = err as ErrorResponse;
+
+    throw new Error(`${error.message} with code ${error.code}`);
+  }
+};
+
+// export const fetchVacancies = async () => {
+//     try {
+//       const response = await axios.get<LogInResponse>(
+//         `${API_URL}/2.0/vacancies/`,
+//         refreshRequest_data,
+//       );
+//       return response.data;
+//     } catch (err) {
+//       const { error } = err as ErrorResponse;
+
+//       throw new Error(`${error.message} with code ${error.code}`);
+//     }
+//   };
+
+export const fetchCatalogues = async () => {
+  try {
+    const response = await axios.get<CataloguesResponse>(`${API_URL}/2.0/catalogues/`, {
+      headers: {
+        'x-secret-key': secretKey,
+        'X-Api-App-Id': client_secret,
+        access_token: access_token,
+      },
+    });
     return response.data;
   } catch (err) {
     const { error } = err as ErrorResponse;

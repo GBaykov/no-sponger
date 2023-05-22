@@ -1,22 +1,31 @@
-import React, { useContext, useCallback, SyntheticEvent } from 'react';
+import React, { useContext, useEffect, useCallback, SyntheticEvent, useState } from 'react';
 import './index.css';
 import { Button, Group, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import cross from '../../assets/cross.svg';
 import arrowDown from '../../assets/down-errow.svg';
 import { AppContext } from '../../store/context';
-import { ActionType } from '../../types';
+import { ActionType, CataloguesResponse } from '../../types';
+import useComponentDidMount from '../../hooks/useComponentDidMount';
+import { fetchCatalogues } from '../../services/Api';
+import { Spinner } from '../spinner';
 
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
+  const isComponentMounted = useComponentDidMount();
+  const [catas, setCatas] = useState<CataloguesResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
+  const [selectData, setSelectData] = useState<any>(null);
 
   const form = useForm<{
-    branch: string;
+    catalogue: string;
     from: number | '' | undefined;
     to: number | '' | undefined;
   }>({
     initialValues: {
-      branch: '',
+      catalogue: '',
       from: '',
       to: '',
     },
@@ -24,22 +33,22 @@ export const FilterForm = () => {
     validate: {},
   });
 
-  const onInputSelect = (e: SyntheticEvent<HTMLInputElement>) => {
-    if (e) {
-      dispatch({ type: ActionType.SetField, payload: { branch: e.currentTarget.value } });
-      form.setFieldValue('branch', e.currentTarget.value);
-    }
-  };
+  // const onInputSelect = (e: SyntheticEvent<HTMLInputElement>) => {
+  //   if (e) {
+  //     dispatch({ type: ActionType.SetCatalogue, payload: { catalogue: e.currentTarget.value } });
+  //     form.setFieldValue('branch', e.currentTarget.value);
+  //   }
+  // };
 
   const onInputChange = useCallback(
     (e: number | string | null, type: string) => {
       if (e) {
-        if (type === 'branch') {
+        if (type === 'catalogue') {
           dispatch({
-            type: ActionType.SetField,
-            payload: { branch: String(e) },
+            type: ActionType.SetCatalogue,
+            payload: { catalogue: String(e) },
           });
-          form.setFieldValue('branch', String(e));
+          form.setFieldValue('catalogue', String(e));
         }
         if (type === 'from') {
           dispatch({
@@ -60,107 +69,141 @@ export const FilterForm = () => {
     [state.from, state.to, dispatch],
   );
 
+  const setCatalogues = async () => {
+    try {
+      setIsLoading(true);
+      const catalogues = await fetchCatalogues();
+      setCatas(catalogues);
+      setIsLoading(false);
+      setIsError(false);
+      addFilterSelectData(catalogues);
+    } catch {
+      setIsLoading(false);
+      setIsError(true);
+    }
+  };
+
+  useEffect(() => {
+    if (isComponentMounted) {
+      setCatalogues();
+    }
+  }, [isComponentMounted]);
+
+  const addFilterSelectData = (catalogues: CataloguesResponse) => {
+    setIsLoading(true);
+    if (catalogues !== null) {
+      const filterSelectData = catalogues?.map((catalogue) => {
+        const cata = { value: catalogue.title_rus, label: catalogue.title_rus, key: catalogue.key };
+        return cata;
+      });
+      setSelectData(filterSelectData);
+    }
+    setIsLoading(false);
+  };
+  console.log(selectData);
+
   return (
     <section className="form-block">
-      <form onSubmit={form.onSubmit((values) => console.log(values))} onReset={form.onReset}>
-        <div className="form-head">
-          <p className="form-head-text">Фильтры</p>
-          <button type="reset" className="reset-btn">
-            Сбросить все
-            <img src={cross} />
-          </button>
-        </div>
+      {!isLoading && !isError && (
+        <form onSubmit={form.onSubmit((values) => console.log(values))} onReset={form.onReset}>
+          <div className="form-head">
+            <p className="form-head-text">Фильтры</p>
+            <button type="reset" className="reset-btn">
+              Сбросить все
+              <img src={cross} />
+            </button>
+          </div>
 
-        <div className="form-inputs">
-          <p className="form-text">Отрасль</p>
-          <Select
-            value={form.values.branch}
-            name="branch"
-            onChange={(e) => onInputChange(e, 'branch')}
-            w="100%"
-            mb={20}
-            h={42}
-            p={0}
-            rightSection={<img src={arrowDown} width="14px" />}
-            rightSectionWidth={30}
-            styles={{
-              rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },
-              input: { borderRadius: '8px' },
-            }}
-            placeholder="Выберете отрасль"
-            data={[
-              { value: 'React', label: 'React' },
-              { value: 'Angular', label: 'Angular' },
-              { value: 'Svelte', label: 'Svelte' },
-            ]}
-          />
-          <p className="form-text">Оклад</p>
-          <NumberInput
-            value={form.values.from}
-            name="from"
-            onChange={(e) => onInputChange(e, 'from')}
-            w="100%"
-            mb={8}
-            h={42}
-            placeholder="От"
-            styles={{
-              input: { borderRadius: '8px' },
-              rightSection: { padding: '0px 0', marginRight: '4px' },
-              controlUp: {
-                borderColor: 'white',
-                color: '#ACADB9',
-                cursor: 'pointer',
-                svg: { marginBottom: '-6px' },
-              },
-              controlDown: {
-                borderColor: 'white',
-                color: '#ACADB9',
-                cursor: 'pointer',
-                svg: { marginTop: '-6px' },
-              },
-            }}
-          />
+          <div className="form-inputs">
+            <p className="form-text">Отрасль</p>
+            {selectData && (
+              <Select
+                value={form.values.catalogue}
+                name="catalogue"
+                onChange={(e) => onInputChange(e, 'catalogue')}
+                w="100%"
+                mb={20}
+                h={42}
+                p={0}
+                rightSection={<img src={arrowDown} width="14px" />}
+                rightSectionWidth={30}
+                styles={{
+                  rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },
+                  input: { borderRadius: '8px' },
+                }}
+                placeholder="Выберете отрасль"
+                data={selectData}
+              />
+            )}
+            <p className="form-text">Оклад</p>
+            <NumberInput
+              value={form.values.from}
+              name="from"
+              onChange={(e) => onInputChange(e, 'from')}
+              w="100%"
+              mb={8}
+              h={42}
+              placeholder="От"
+              styles={{
+                input: { borderRadius: '8px' },
+                rightSection: { padding: '0px 0', marginRight: '4px' },
+                controlUp: {
+                  borderColor: 'white',
+                  color: '#ACADB9',
+                  cursor: 'pointer',
+                  svg: { marginBottom: '-6px' },
+                },
+                controlDown: {
+                  borderColor: 'white',
+                  color: '#ACADB9',
+                  cursor: 'pointer',
+                  svg: { marginTop: '-6px' },
+                },
+              }}
+            />
 
-          <NumberInput
-            value={form.values.to}
-            onChange={(e) => onInputChange(e, 'to')}
-            name="to"
-            w="100%"
-            h={42}
-            placeholder="До"
-            styles={{
-              rightSection: { marginRight: '4px' },
-              input: { borderRadius: '8px' },
-              controlUp: {
-                borderColor: 'white',
-                color: '#ACADB9',
-                cursor: 'pointer',
-                svg: { marginBottom: '-6px' },
-              },
-              controlDown: {
-                borderColor: 'white',
-                color: '#ACADB9',
-                cursor: 'pointer',
-                svg: { marginTop: '-6px' },
-              },
-            }}
-          />
-        </div>
-        <Group position="center" mt={20}>
-          <Button
-            w="100%"
-            h={42}
-            type="submit"
-            bg="#5E96FC"
-            styles={{
-              label: { fontFamily: 'Inter', fontWeight: 'normal', fontSize: '14px' },
-              root: { borderRadius: '8px' },
-            }}
-          >
-            Применить
-          </Button>
-        </Group>
-      </form>
+            <NumberInput
+              value={form.values.to}
+              onChange={(e) => onInputChange(e, 'to')}
+              name="to"
+              w="100%"
+              h={42}
+              placeholder="До"
+              styles={{
+                rightSection: { marginRight: '4px' },
+                input: { borderRadius: '8px' },
+                controlUp: {
+                  borderColor: 'white',
+                  color: '#ACADB9',
+                  cursor: 'pointer',
+                  svg: { marginBottom: '-6px' },
+                },
+                controlDown: {
+                  borderColor: 'white',
+                  color: '#ACADB9',
+                  cursor: 'pointer',
+                  svg: { marginTop: '-6px' },
+                },
+              }}
+            />
+          </div>
+          <Group position="center" mt={20}>
+            <Button
+              w="100%"
+              h={42}
+              type="submit"
+              bg="#5E96FC"
+              styles={{
+                label: { fontFamily: 'Inter', fontWeight: 'normal', fontSize: '14px' },
+                root: { borderRadius: '8px' },
+              }}
+            >
+              Применить
+            </Button>
+          </Group>
+        </form>
+      )}
+      {isLoading && <Spinner />}
     </section>
   );
 };

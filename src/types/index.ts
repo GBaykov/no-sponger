@@ -2,7 +2,7 @@ export type AppState = {
   from: string;
   to: string;
   searhWord: string;
-  branch: string;
+  catalogue: string;
   activeLink: string;
   currentPage: number;
   logInData: LogInResponse | null;
@@ -11,7 +11,7 @@ export enum ActionType {
   SetTo,
   SetFrom,
   SetSearchWord,
-  SetField,
+  SetCatalogue,
   SetActiveLink,
   SetCurrentPage,
   SetlogInData,
@@ -32,9 +32,9 @@ export interface SetSearchWord {
   payload: { searhWord: string };
 }
 
-export interface SetField {
-  type: ActionType.SetField;
-  payload: { branch: string };
+export interface SetCatalogue {
+  type: ActionType.SetCatalogue;
+  payload: { catalogue: string };
 }
 
 export interface SetActiveLink {
@@ -56,7 +56,7 @@ export type StateActions =
   | SetTo
   | SetFrom
   | SetSearchWord
-  | SetField
+  | SetCatalogue
   | SetActiveLink
   | SetCurrentPage
   | SetlogInData;
@@ -79,3 +79,21 @@ export type LogInResponse = {
 export type ErrorResponse = {
   error: { code: number; message: string; error: string };
 };
+
+export type CatalogueResponse = {
+  title_rus: string;
+  url_rus: string;
+  title: string;
+  title_trimmed: string;
+  key: number;
+  positions: [
+    {
+      title_rus: string;
+      url_rus: string;
+      title: string;
+      id_parent: number;
+      key: number;
+    },
+  ];
+};
+export type CataloguesResponse = [CatalogueResponse];
