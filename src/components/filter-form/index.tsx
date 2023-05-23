@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback, SyntheticEvent, useState } from 'react';
+import React, { useContext, useEffect, useCallback, useState } from 'react';
 import './index.css';
 import { Button, Group, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -10,15 +10,21 @@ import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { fetchCatalogues } from '../../services/Api';
 import { Spinner } from '../spinner';
 
+export type SelectedData = {
+  value: string;
+  label: string;
+  key: number;
+}[];
+
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
   const isComponentMounted = useComponentDidMount();
   const [catas, setCatas] = useState<CataloguesResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  const [selectData, setSelectData] = useState<any>(null);
+  const [selectData, setSelectData] = useState<SelectedData | null>(null);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
+  const [currentCatKey, setCurrentKey] = useState(0);
 
   const form = useForm<{
     catalogue: string;
@@ -34,25 +40,25 @@ export const FilterForm = () => {
     validate: {},
   });
 
-  // const onInputSelect = (e: SyntheticEvent<HTMLInputElement>) => {
-  //   if (e) {
-  //     dispatch({ type: ActionType.SetCatalogue, payload: { catalogue: e.currentTarget.value } });
-  //     form.setFieldValue('branch', e.currentTarget.value);
-  //   }
-  // };
+  useEffect(() => {
+    if (selectData) {
+      const currentkey = selectData.find((item) => item.value === currentCatalogue)?.key;
+      if (currentkey) {
+        dispatch({
+          type: ActionType.SetCatalogue,
+          payload: { catalogue: currentkey },
+        });
+        setCurrentKey(currentkey);
+      }
+    }
+  }, [currentCatalogue]);
 
   const onInputChange = useCallback(
     (e: number | string | null, type: string, catalogue?: string) => {
       if (e) {
         if (type === 'catalogue') {
-          dispatch({
-            type: ActionType.SetCatalogue,
-            payload: { catalogue: String(e).split(' ')[0] },
-          });
-          console.log(String(e).split(' ')[1]);
-          form.setFieldValue('catalogue', String(e).split(' ')[1]);
-
-          setCurrentCatalogue(String(e).split(' ')[1]);
+          form.setFieldValue('catalogue', String(e));
+          setCurrentCatalogue(String(e));
         }
         if (type === 'from') {
           dispatch({
@@ -72,6 +78,26 @@ export const FilterForm = () => {
     },
     [state.from, state.to, dispatch],
   );
+
+  const addFilterSelectData = (catalogues: CataloguesResponse) => {
+    setIsLoading(true);
+    if (catalogues !== null) {
+      const filterSelectData: {
+        value: string;
+        label: string;
+        key: number;
+      }[] = catalogues?.map((catalogue) => {
+        const cata = {
+          value: catalogue.title_rus,
+          label: catalogue.title_rus,
+          key: catalogue.key,
+        };
+        return cata;
+      });
+      setSelectData(filterSelectData);
+    }
+    setIsLoading(false);
+  };
 
   const setCatalogues = async () => {
     try {
@@ -93,23 +119,7 @@ export const FilterForm = () => {
     }
   }, [isComponentMounted]);
 
-  const addFilterSelectData = (catalogues: CataloguesResponse) => {
-    setIsLoading(true);
-    if (catalogues !== null) {
-      const filterSelectData = catalogues?.map((catalogue) => {
-        const cata = {
-          value: catalogue.key + ' ' + catalogue.title_rus,
-          label: catalogue.title_rus,
-          key: catalogue.key,
-        };
-        return cata;
-      });
-      setSelectData(filterSelectData);
-    }
-    setIsLoading(false);
-  };
-  console.log(selectData);
-
+  console.log(state.catalogue, currentCatalogue, currentCatKey);
   return (
     <section className="form-block">
       {!isLoading && !isError && (

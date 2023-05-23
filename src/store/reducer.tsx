@@ -5,7 +5,7 @@ export const initialState: AppState = {
   from: '',
   to: '',
   searhWord: '',
-  catalogue: '',
+  catalogue: 0,
   activeLink: '/',
   currentPage: 1,
   logInData: null,

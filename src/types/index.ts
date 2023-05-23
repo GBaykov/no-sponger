@@ -2,7 +2,7 @@ export type AppState = {
   from: string;
   to: string;
   searhWord: string;
-  catalogue: string;
+  catalogue: number;
   activeLink: string;
   currentPage: number;
   logInData: LogInResponse | null;
@@ -34,7 +34,7 @@ export interface SetSearchWord {
 
 export interface SetCatalogue {
   type: ActionType.SetCatalogue;
-  payload: { catalogue: string };
+  payload: { catalogue: number };
 }
 
 export interface SetActiveLink {
