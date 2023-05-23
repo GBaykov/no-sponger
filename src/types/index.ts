@@ -1,3 +1,5 @@
+import { Vacancies } from './vacancies';
+
 export type AppState = {
   from: string;
   to: string;
@@ -7,6 +9,10 @@ export type AppState = {
   currentPage: number;
   logInData: LogInResponse | null;
   isLoading: boolean;
+  vacsPage: number;
+  vacsResp: Vacancies | null;
+  catalogues: CataloguesResponse | null;
+  selectData: SelectedData | null;
 };
 export enum ActionType {
   SetTo,
@@ -17,7 +23,31 @@ export enum ActionType {
   SetCurrentPage,
   SetlogInData,
   SetIsLoading,
+  SetVacsPage,
+  SetVacsResp,
+  SetCatalogues,
+  SetSelectData,
 }
+export interface SetSelectData {
+  type: ActionType.SetSelectData;
+  payload: { selectData: SelectedData };
+}
+
+export interface SetCatalogues {
+  type: ActionType.SetCatalogues;
+  payload: { catalogues: CataloguesResponse };
+}
+
+export interface SetVacsResp {
+  type: ActionType.SetVacsResp;
+  payload: { vacsResp: Vacancies };
+}
+
+export interface SetVacsPage {
+  type: ActionType.SetVacsPage;
+  payload: { vacsPage: number };
+}
+
 export interface SetIsLoading {
   type: ActionType.SetIsLoading;
   payload: { isLoading: boolean };
@@ -66,7 +96,11 @@ export type StateActions =
   | SetActiveLink
   | SetCurrentPage
   | SetIsLoading
-  | SetlogInData;
+  | SetlogInData
+  | SetVacsResp
+  | SetCatalogues
+  | SetSelectData
+  | SetVacsPage;
 
 export type CardType = {
   profession: string;
@@ -104,3 +138,8 @@ export type CatalogueResponse = {
   ];
 };
 export type CataloguesResponse = [CatalogueResponse];
+export type SelectedData = {
+  value: string;
+  label: string;
+  key: number;
+}[];

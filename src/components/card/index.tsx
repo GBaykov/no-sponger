@@ -11,7 +11,7 @@ export type CardProps = {
   type_of_work: string;
   payment_to?: number;
   payment_from?: number;
-  currency?: number;
+  currency?: string;
 };
 
 export const Card = ({
@@ -42,13 +42,27 @@ export const Card = ({
           />
         </div>
         <div className="content__info ">
-          {currency && <p className="info-salary">зп {currency}</p>}
-          {payment_to && payment_from && (
+          {/* {currency && <p className="info-salary">зп {currency}</p>} */}
+
+          {payment_to ? (
             <p className="info-salary">
-              зп {payment_from} - {payment_to}
+              з/п {payment_from} - {payment_to} {currency}
+            </p>
+          ) : (
+            <p className="info-salary">
+              з/п от {payment_from} {currency}
             </p>
           )}
-          {!payment_to && payment_from && <p className="info-salary">зп от {payment_from}</p>}
+          {/* {payment_to && payment_from && (
+            <p className="info-salary">
+              з/п {payment_from} - {payment_to} {currency}
+            </p>
+          )}
+          {!payment_to && payment_from && (
+            <p className="info-salary">
+              з/п от {payment_from} {currency}
+            </p>
+          )} */}
 
           <img src={dot} alt="dot" className="dot" />
           <p className="info-typeofwork card-text">{type_of_work}</p>

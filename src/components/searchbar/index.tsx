@@ -27,6 +27,10 @@ export const Searchbar = () => {
     });
 
     const vacancies = await getVacancies(state);
+    dispatch({
+      type: ActionType.SetVacsResp,
+      payload: { vacsResp: vacancies },
+    });
 
     dispatch({
       type: ActionType.SetIsLoading,

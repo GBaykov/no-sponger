@@ -11,11 +11,6 @@ import { fetchCatalogues, fetchVacancies } from '../../services/Api';
 import { Spinner } from '../spinner';
 import { getVacancies } from '../../utils/getVacancies';
 
-export type SelectedData = {
-  value: string;
-  label: string;
-  key: number;
-}[];
 export type FormData = {
   catalogue: string;
   from: number | '' | undefined;
@@ -25,10 +20,10 @@ export type FormData = {
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
   const isComponentMounted = useComponentDidMount();
-  const [catas, setCatas] = useState<CataloguesResponse | null>(null);
+  // const [catas, setCatas] = useState<CataloguesResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [selectData, setSelectData] = useState<SelectedData | null>(null);
+  // const [selectData, setSelectData] = useState<SelectedData | null>(null);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
 
@@ -40,13 +35,15 @@ export const FilterForm = () => {
     });
 
     const vacancies = await getVacancies(state);
+    dispatch({
+      type: ActionType.SetVacsResp,
+      payload: { vacsResp: vacancies },
+    });
 
     dispatch({
       type: ActionType.SetIsLoading,
       payload: { isLoading: false },
     });
-
-    console.log(vacancies);
   }
 
   const form = useForm<{
@@ -64,8 +61,8 @@ export const FilterForm = () => {
   });
 
   useEffect(() => {
-    if (selectData) {
-      const currentkey = selectData.find((item) => item.value === currentCatalogue)?.key;
+    if (state.selectData) {
+      const currentkey = state.selectData.find((item) => item.value === currentCatalogue)?.key;
       if (currentkey) {
         dispatch({
           type: ActionType.SetCatalogue,
@@ -109,14 +106,15 @@ export const FilterForm = () => {
     [state.from, state.to, dispatch],
   );
 
-  const addFilterSelectData = (catalogues: CataloguesResponse) => {
+  const addFilterSelectData = () => {
     setIsLoading(true);
-    if (catalogues !== null) {
+    if (state.catalogues !== null) {
+      console.log();
       const filterSelectData: {
         value: string;
         label: string;
         key: number;
-      }[] = catalogues?.map((catalogue) => {
+      }[] = state.catalogues?.map((catalogue) => {
         const cata = {
           value: catalogue.title_rus,
           label: catalogue.title_rus,
@@ -124,7 +122,11 @@ export const FilterForm = () => {
         };
         return cata;
       });
-      setSelectData(filterSelectData);
+      dispatch({
+        type: ActionType.SetSelectData,
+        payload: { selectData: filterSelectData },
+      });
+      // setSelectData(filterSelectData);
     }
     setIsLoading(false);
   };
@@ -133,10 +135,16 @@ export const FilterForm = () => {
     try {
       setIsLoading(true);
       const catalogues = await fetchCatalogues();
-      setCatas(catalogues);
+      // setCatas(catalogues);
+      dispatch({
+        type: ActionType.SetCatalogues,
+        payload: { catalogues: catalogues },
+      });
+
       setIsLoading(false);
       setIsError(false);
-      addFilterSelectData(catalogues);
+
+      addFilterSelectData();
     } catch {
       setIsLoading(false);
       setIsError(true);
@@ -163,7 +171,7 @@ export const FilterForm = () => {
 
           <div className="form-inputs">
             <p className="form-text">Отрасль</p>
-            {selectData && (
+            {state.selectData && (
               <Select
                 clearable
                 value={form.values.catalogue}
@@ -180,7 +188,7 @@ export const FilterForm = () => {
                   input: { borderRadius: '8px' },
                 }}
                 placeholder="Выберете отрасль"
-                data={selectData}
+                data={state.selectData}
               />
             )}
             <p className="form-text">Оклад</p>

@@ -8,7 +8,7 @@ export async function getVacancies(state: AppState) {
   const catalogues = state.catalogue;
   const no_agreement = 1;
   const count = 4;
-  const page = 1;
+  const page = state.vacsPage;
   const published = 1;
 
   const vacancies = await fetchVacancies(

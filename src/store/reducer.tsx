@@ -6,10 +6,14 @@ export const initialState: AppState = {
   to: '',
   searhWord: '',
   catalogue: 0,
+  catalogues: null,
   activeLink: '/',
   currentPage: 1,
   logInData: null,
   isLoading: false,
+  vacsPage: 1,
+  vacsResp: null,
+  selectData: null,
 };
 
 export function AppReducer(state: AppState, action: StateActions): AppState {
@@ -30,6 +34,14 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
       return { ...state, logInData: action.payload.logInData };
     case ActionType.SetIsLoading:
       return { ...state, isLoading: action.payload.isLoading };
+    case ActionType.SetVacsPage:
+      return { ...state, vacsPage: action.payload.vacsPage };
+    case ActionType.SetVacsResp:
+      return { ...state, vacsResp: action.payload.vacsResp };
+    case ActionType.SetCatalogues:
+      return { ...state, catalogues: action.payload.catalogues };
+    case ActionType.SetSelectData:
+      return { ...state, selectData: action.payload.selectData };
     default:
       return state;
   }
