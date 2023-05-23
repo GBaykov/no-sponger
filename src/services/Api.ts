@@ -66,7 +66,7 @@ export const fetchCatalogues = async () => {
       headers: {
         'x-secret-key': secretKey,
         'X-Api-App-Id': client_secret,
-        access_token,
+        Authorization: `Bearer ${access_token}`,
       },
     });
     return response.data;
@@ -101,7 +101,7 @@ export const fetchVacancies = async (
     headers: {
       'x-secret-key': secretKey,
       'X-Api-App-Id': client_secret,
-      access_token,
+      Authorization: `Bearer ${access_token}`,
     },
   };
   try {

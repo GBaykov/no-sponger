@@ -1,0 +1,24 @@
+.empty {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 328px;
+  align-items: center;
+}
+
+.empty-img {
+  width: 240px;
+  height: 230.27px;
+}
+
+.empty-text {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  display: flex;
+  align-items: center;
+  color: #343a40;
+}

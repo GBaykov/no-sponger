@@ -11,7 +11,8 @@ export type CardProps = {
   type_of_work: string;
   payment_to?: number;
   payment_from?: number;
-  currency?: string;
+  currency: string;
+  payment: number | null;
 };
 
 export const Card = ({
@@ -20,6 +21,7 @@ export const Card = ({
   type_of_work,
   payment_to,
   payment_from,
+  payment,
   currency,
 }: CardProps) => {
   const [isChosen, setIsChosen] = useState(false);
@@ -27,6 +29,33 @@ export const Card = ({
   const onStarClick = (e: react.MouseEvent<HTMLImageElement, MouseEvent>) => {
     e.preventDefault();
     setIsChosen(!isChosen);
+  };
+  const PaymentBloch = () => {
+    if (!payment_to && !payment_from && payment) {
+      return (
+        <p className="info-salary">
+          з/п {payment} {currency}
+        </p>
+      );
+    } else if (payment_to && payment_from && payment_from > 0 && payment_to > 0) {
+      return (
+        <p className="info-salary">
+          з/п {payment_from} - {payment_to} {currency}
+        </p>
+      );
+    } else if (!payment_to && payment_from) {
+      return (
+        <p className="info-salary">
+          з/п от {payment_from} {currency}
+        </p>
+      );
+    } else if (payment_to && !payment_from) {
+      return (
+        <p className="info-salary">
+          з/п до {payment_to} {currency}
+        </p>
+      );
+    }
   };
 
   return (
@@ -42,9 +71,8 @@ export const Card = ({
           />
         </div>
         <div className="content__info ">
-          {/* {currency && <p className="info-salary">зп {currency}</p>} */}
-
-          {payment_to ? (
+          {PaymentBloch()}
+          {/* {payment_to ? (
             <p className="info-salary">
               з/п {payment_from} - {payment_to} {currency}
             </p>
@@ -53,12 +81,12 @@ export const Card = ({
               з/п от {payment_from} {currency}
             </p>
           )}
-          {/* {payment_to && payment_from && (
+          {payment_to && payment_from && (
             <p className="info-salary">
               з/п {payment_from} - {payment_to} {currency}
             </p>
-          )}
-          {!payment_to && payment_from && (
+          )} */}
+          {/* {!payment_to && payment_from && (
             <p className="info-salary">
               з/п от {payment_from} {currency}
             </p>
