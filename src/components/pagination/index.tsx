@@ -66,27 +66,32 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   useEffect(() => {
     // addRepos(state.userName, state.currentPage);
     if (state.vacsResp?.total) {
-      setPageCount(Math.ceil(state.vacsResp?.total / itemsPerPage));
+      const divisible = state.vacsResp?.total;
+      if (divisible > 500) {
+        setPageCount(Math.ceil(500 / itemsPerPage));
+      } else {
+        setPageCount(Math.ceil(divisible / itemsPerPage));
+      }
     }
   }, []);
 
-  useEffect(() => {
-    setBeginOfSet(state.currentPage * itemsPerPage - 3);
+  // useEffect(() => {
+  //   setBeginOfSet(state.vacsPage * itemsPerPage - 3);
 
-    if (state.vacsResp?.total) {
-      const remnant = (state.currentPage * itemsPerPage) % state.vacsResp?.total;
-      const endOfS =
-        remnant >= 4
-          ? state.currentPage * itemsPerPage
-          : state.currentPage * itemsPerPage - remnant;
-      setEndOfSet(endOfS);
-    }
-  }, [state.currentPage]);
+  //   if (state.vacsResp?.total) {
+  //     const remnant = (state.vacsPage * itemsPerPage) % state.vacsResp?.total;
+  //     const endOfS =
+  //       remnant >= 4 ? state.vacsPage * itemsPerPage : state.vacsPage * itemsPerPage - remnant;
+  //     setEndOfSet(endOfS);
+  //   }
+  // }, [state.vacsPage]);
+
   type SelectedItem = {
     selected: number;
   };
 
   const handlePageClick = (event: SelectedItem) => {
+    console.log(event.selected);
     dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: event.selected + 1 } });
   };
 
@@ -109,8 +114,8 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
           breakLabel="..."
           nextLabel=" >"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={1}
+          // pageRangeDisplayed={2}
+          // marginPagesDisplayed={1}
           pageCount={pageCount}
           previousLabel="< "
           renderOnZeroPageCount={null}

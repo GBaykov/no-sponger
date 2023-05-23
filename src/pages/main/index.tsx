@@ -19,7 +19,8 @@ export const MainPage = () => {
     if (isComponentMounted) {
       getVacans();
     }
-  }, [isComponentMounted]);
+  }, [isComponentMounted, state.currentPage, state.vacsPage]);
+  console.log(state.currentPage, state.vacsPage);
 
   const getVacans = useCallback(async () => {
     dispatch({
@@ -43,22 +44,8 @@ export const MainPage = () => {
     !state.isLoading && state.vacsResp && state.vacsResp.total === 0 ? (
       <EmptyState />
     ) : (
-      <CardList />
+      <PaginatedItems itemsPerPage={4} />
     );
-
-  // const MainContent = () => {
-
-  //  if (!state.isLoading && state.vacsResp && state.vacsResp.total === 0) {
-  //     return <EmptyState />;
-  //   } else {
-  //     return (
-
-  //         <CardList />
-  //         {/* <PaginatedItems itemsPerPage={4} /> */}
-  //       </section>
-  //     );
-  //   }
-  // };
 
   return (
     <main className="main">
