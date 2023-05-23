@@ -28,12 +28,11 @@ export const FilterForm = () => {
   const [currentCatKey, setCurrentKey] = useState(0);
 
   async function onFormSubmit(e: FormData) {
-    // e.preventDefault();
     dispatch({
       type: ActionType.SetIsLoading,
       payload: { isLoading: true },
     });
-
+    console.log('ONSUBMIT');
     const vacancies = await getVacancies(state);
     dispatch({
       type: ActionType.SetVacsResp,
@@ -106,15 +105,14 @@ export const FilterForm = () => {
     [state.from, state.to, dispatch],
   );
 
-  const addFilterSelectData = () => {
+  const addFilterSelectData = (catalogues: CataloguesResponse) => {
     setIsLoading(true);
-    if (state.catalogues !== null) {
-      console.log();
+    if (catalogues) {
       const filterSelectData: {
         value: string;
         label: string;
         key: number;
-      }[] = state.catalogues?.map((catalogue) => {
+      }[] = catalogues?.map((catalogue) => {
         const cata = {
           value: catalogue.title_rus,
           label: catalogue.title_rus,
@@ -126,7 +124,6 @@ export const FilterForm = () => {
         type: ActionType.SetSelectData,
         payload: { selectData: filterSelectData },
       });
-      // setSelectData(filterSelectData);
     }
     setIsLoading(false);
   };
@@ -135,7 +132,6 @@ export const FilterForm = () => {
     try {
       setIsLoading(true);
       const catalogues = await fetchCatalogues();
-      // setCatas(catalogues);
       dispatch({
         type: ActionType.SetCatalogues,
         payload: { catalogues: catalogues },
@@ -144,7 +140,7 @@ export const FilterForm = () => {
       setIsLoading(false);
       setIsError(false);
 
-      addFilterSelectData();
+      addFilterSelectData(catalogues);
     } catch {
       setIsLoading(false);
       setIsError(true);
