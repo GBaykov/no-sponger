@@ -6,6 +6,7 @@ export type AppState = {
   activeLink: string;
   currentPage: number;
   logInData: LogInResponse | null;
+  isLoading: boolean;
 };
 export enum ActionType {
   SetTo,
@@ -15,6 +16,11 @@ export enum ActionType {
   SetActiveLink,
   SetCurrentPage,
   SetlogInData,
+  SetIsLoading,
+}
+export interface SetIsLoading {
+  type: ActionType.SetIsLoading;
+  payload: { isLoading: boolean };
 }
 
 export interface SetTo {
@@ -59,6 +65,7 @@ export type StateActions =
   | SetCatalogue
   | SetActiveLink
   | SetCurrentPage
+  | SetIsLoading
   | SetlogInData;
 
 export type CardType = {

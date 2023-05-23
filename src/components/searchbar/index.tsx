@@ -1,13 +1,16 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import './index.css';
 import { Button } from '@mantine/core';
 import search from '../../assets/search1.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
 import { fetchVacancies } from '../../services/Api';
+import { getVacancies } from '../../utils/getVacancies';
 
 export const Searchbar = () => {
   const { state, dispatch } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -18,25 +21,17 @@ export const Searchbar = () => {
 
   async function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const keyword = state.searhWord;
-    const payment_from = +state.from;
-    const payment_to = +state.to;
-    const catalogues = state.catalogue;
-    const no_agreement = 1;
-    const count = 4;
-    const page = 1;
-    const published = 1;
+    dispatch({
+      type: ActionType.SetIsLoading,
+      payload: { isLoading: true },
+    });
 
-    const vacancies = await fetchVacancies(
-      count,
-      page,
-      no_agreement,
-      keyword,
-      payment_from,
-      payment_to,
-      catalogues,
-      published,
-    );
+    const vacancies = await getVacancies(state);
+
+    dispatch({
+      type: ActionType.SetIsLoading,
+      payload: { isLoading: false },
+    });
     console.log(vacancies);
   }
 

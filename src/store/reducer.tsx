@@ -9,6 +9,7 @@ export const initialState: AppState = {
   activeLink: '/',
   currentPage: 1,
   logInData: null,
+  isLoading: false,
 };
 
 export function AppReducer(state: AppState, action: StateActions): AppState {
@@ -27,6 +28,8 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
       return { ...state, currentPage: action.payload.currentPage };
     case ActionType.SetlogInData:
       return { ...state, logInData: action.payload.logInData };
+    case ActionType.SetIsLoading:
+      return { ...state, isLoading: action.payload.isLoading };
     default:
       return state;
   }
