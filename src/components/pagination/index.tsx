@@ -1,18 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AppContext } from '../../store/context';
 import { Spinner } from '../spinner';
 import { ActionType, CardType } from '../../types';
 import { Card } from '../card';
+import { CardList } from '../card-list';
+import useComponentDidMount from '../../hooks/useComponentDidMount';
+import { getVacancies } from '../../utils/getVacancies';
 
 export type PaginationProps = {
   itemsPerPage: number;
 };
 
-function Items(cards: [CardType]) {
-  return <>{cards && cards.map((card) => <Card {...card} />)}</>;
-}
+// function Items(cards: [CardType]) {
+//   return <>{cards && cards.map((card) => <Card {...card} />)}</>;
+// }
 
 export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   const [pageCount, setPageCount] = useState(0);
@@ -22,6 +25,31 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   const [beginOfSet, setBeginOfSet] = useState(0);
 
   const { state, dispatch } = useContext(AppContext);
+  // const isComponentMounted = useComponentDidMount();
+
+  // useEffect(() => {
+  //   if (isComponentMounted) {
+  //     getVacans();
+  //   }
+  // }, [isComponentMounted]);
+
+  // const getVacans = useCallback(async () => {
+  //   dispatch({
+  //     type: ActionType.SetIsLoading,
+  //     payload: { isLoading: true },
+  //   });
+
+  //   const vacancies = await getVacancies(state);
+  //   dispatch({
+  //     type: ActionType.SetVacsResp,
+  //     payload: { vacsResp: vacancies },
+  //   });
+
+  //   dispatch({
+  //     type: ActionType.SetIsLoading,
+  //     payload: { isLoading: false },
+  //   });
+  // }, [state.vacsResp]);
 
   // async function addRepos(userName, currentPage) {
   //   try {
@@ -37,21 +65,32 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   // }
   useEffect(() => {
     // addRepos(state.userName, state.currentPage);
-    // setPageCount(Math.ceil(state.reposLenght / itemsPerPage));
+    if (state.vacsResp?.total) {
+      setPageCount(Math.ceil(state.vacsResp?.total / itemsPerPage));
+    }
   }, []);
 
-  //   useEffect(() => {
-  //     setBeginOfSet(state.currentPage * itemsPerPage - 3);
-  //     const remnant = (state.currentPage * itemsPerPage) % state.reposLenght;
-  //     const endOfS =
-  //       remnant >= 4 ? state.currentPage * itemsPerPage : state.currentPage * itemsPerPage - remnant;
-  //     setEndOfSet(endOfS);
-  //   }, [state.currentPage]);
+  useEffect(() => {
+    setBeginOfSet(state.currentPage * itemsPerPage - 3);
 
-  //   const handlePageClick = (event:any) => {
-  //     dispatch({ type: ActionType.SetCurrentPage, payload: { currentPage: event.selected + 1 } });
-  //   };
-  //   const load = isLoading ? <Spinner /> : <Items cards={cards} />;
+    if (state.vacsResp?.total) {
+      const remnant = (state.currentPage * itemsPerPage) % state.vacsResp?.total;
+      const endOfS =
+        remnant >= 4
+          ? state.currentPage * itemsPerPage
+          : state.currentPage * itemsPerPage - remnant;
+      setEndOfSet(endOfS);
+    }
+  }, [state.currentPage]);
+  type SelectedItem = {
+    selected: number;
+  };
+
+  const handlePageClick = (event: SelectedItem) => {
+    dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: event.selected + 1 } });
+  };
+
+  const load = isLoading ? <Spinner /> : <CardList />;
 
   //   function pageCountSet() {
   //     return (
@@ -63,13 +102,13 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
 
   return (
     <>
-      {/* {load} */}
+      {load}
       <div className="paginate-count">
         {/* {pageCountSet()} */}
         <ReactPaginate
           breakLabel="..."
           nextLabel=" >"
-          //   onPageChange={handlePageClick}
+          onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={1}
           pageCount={pageCount}

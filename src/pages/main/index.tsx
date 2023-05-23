@@ -8,6 +8,7 @@ import { Spinner } from '../../components/spinner';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { getVacancies } from '../../utils/getVacancies';
 import { ActionType } from '../../types';
+import PaginatedItems from '../../components/pagination';
 
 export const MainPage = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -47,6 +48,7 @@ export const MainPage = () => {
           <section className="main__content-field">
             <Searchbar />
             <CardList />
+            {/* <PaginatedItems itemsPerPage={4} /> */}
           </section>
         )}
       </div>
