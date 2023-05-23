@@ -4,6 +4,7 @@ import axios from 'axios';
 import { number } from 'yargs';
 import { CataloguesResponse, ErrorResponse, LogInResponse } from '../types';
 import { getFromStorage } from '../utils/localstorage';
+import { Vacancies } from '../types/vacancies';
 
 const data = {
   params: {
@@ -77,11 +78,14 @@ export const fetchCatalogues = async () => {
 };
 
 export const fetchVacancies = async (
-  keyword: string,
+  count: number,
+  page: number,
+  no_agreement: number,
+  keyword?: string,
   payment_from?: number,
   payment_to?: number,
-  no_agreement = 1,
   catalogues?: number,
+  published?: number,
 ) => {
   const vacanciesRequestData = {
     params: {
@@ -89,7 +93,10 @@ export const fetchVacancies = async (
       payment_from,
       payment_to,
       catalogues,
-      no_agreement: 1,
+      no_agreement,
+      count,
+      page,
+      published,
     },
     headers: {
       'x-secret-key': secretKey,
@@ -98,10 +105,7 @@ export const fetchVacancies = async (
     },
   };
   try {
-    const response = await axios.get<CataloguesResponse>(
-      `${API_URL}/2.0/vacancies/`,
-      vacanciesRequestData,
-    );
+    const response = await axios.get<Vacancies>(`${API_URL}/2.0/vacancies/`, vacanciesRequestData);
     return response.data;
   } catch (err) {
     const { error } = err as ErrorResponse;

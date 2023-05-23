@@ -7,7 +7,7 @@ import arrowDown from '../../assets/down-errow.svg';
 import { AppContext } from '../../store/context';
 import { ActionType, CataloguesResponse } from '../../types';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
-import { fetchCatalogues } from '../../services/Api';
+import { fetchCatalogues, fetchVacancies } from '../../services/Api';
 import { Spinner } from '../spinner';
 
 export type SelectedData = {
@@ -15,6 +15,11 @@ export type SelectedData = {
   label: string;
   key: number;
 }[];
+export type FormData = {
+  catalogue: string;
+  from: number | '' | undefined;
+  to: number | '' | undefined;
+};
 
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -25,6 +30,30 @@ export const FilterForm = () => {
   const [selectData, setSelectData] = useState<SelectedData | null>(null);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
+
+  async function onFormSubmit(e: FormData) {
+    // e.preventDefault();
+    const keyword = state.searhWord;
+    const payment_from = +state.from;
+    const payment_to = +state.to;
+    const catalogues = state.catalogue;
+    const no_agreement = 1;
+    const count = 4;
+    const page = 1;
+    const published = 1;
+
+    const vacancies = await fetchVacancies(
+      count,
+      page,
+      no_agreement,
+      keyword,
+      payment_from,
+      payment_to,
+      catalogues,
+      published,
+    );
+    console.log(vacancies);
+  }
 
   const form = useForm<{
     catalogue: string;
@@ -54,25 +83,32 @@ export const FilterForm = () => {
   }, [currentCatalogue]);
 
   const onInputChange = useCallback(
-    (e: number | string | null, type: string, catalogue?: string) => {
-      if (e) {
-        if (type === 'catalogue') {
-          form.setFieldValue('catalogue', String(e));
-          setCurrentCatalogue(String(e));
-        }
-        if (type === 'from') {
+    (e: number | string | null, type: string) => {
+      if (type === 'catalogue') {
+        form.setFieldValue('catalogue', String(e));
+        setCurrentCatalogue(String(e));
+      }
+
+      if (type === 'from') {
+        if (e) {
           dispatch({
             type: ActionType.SetFrom,
             payload: { from: String(e) },
           });
           form.setFieldValue('from', +e);
+        } else {
+          form.setFieldValue('from', '');
         }
-        if (type === 'to') {
+      }
+      if (type === 'to') {
+        if (e) {
           dispatch({
             type: ActionType.SetTo,
             payload: { to: String(e) },
           });
           form.setFieldValue('to', +e);
+        } else {
+          form.setFieldValue('to', '');
         }
       }
     },
@@ -119,11 +155,10 @@ export const FilterForm = () => {
     }
   }, [isComponentMounted]);
 
-  console.log(state.catalogue, currentCatalogue, currentCatKey);
   return (
     <section className="form-block">
       {!isLoading && !isError && (
-        <form onSubmit={form.onSubmit((values) => console.log(values))} onReset={form.onReset}>
+        <form onSubmit={form.onSubmit((e) => onFormSubmit(e))} onReset={form.onReset}>
           <div className="form-head">
             <p className="form-head-text">Фильтры</p>
             <button type="reset" className="reset-btn">
@@ -136,6 +171,7 @@ export const FilterForm = () => {
             <p className="form-text">Отрасль</p>
             {selectData && (
               <Select
+                clearable
                 value={form.values.catalogue}
                 name="catalogue"
                 onChange={(e) => onInputChange(e, 'catalogue')}

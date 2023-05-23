@@ -16,14 +16,28 @@ export const Searchbar = () => {
     });
   };
 
-  function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const keyword = state.searhWord;
     const payment_from = +state.from;
     const payment_to = +state.to;
-    const catalogue = state.catalogue;
+    const catalogues = state.catalogue;
+    const no_agreement = 1;
+    const count = 4;
+    const page = 1;
+    const published = 1;
 
-    const vacancies = fetchVacancies(keyword, payment_from, payment_to);
+    const vacancies = await fetchVacancies(
+      count,
+      page,
+      no_agreement,
+      keyword,
+      payment_from,
+      payment_to,
+      catalogues,
+      published,
+    );
+    console.log(vacancies);
   }
 
   return (
