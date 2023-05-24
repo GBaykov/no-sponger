@@ -22,6 +22,10 @@ export const Searchbar = () => {
   async function onFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch({
+      type: ActionType.SetVacsPage,
+      payload: { vacsPage: 0 },
+    });
+    dispatch({
       type: ActionType.SetIsLoading,
       payload: { isLoading: true },
     });

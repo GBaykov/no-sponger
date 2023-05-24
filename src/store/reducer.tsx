@@ -11,7 +11,7 @@ export const initialState: AppState = {
   currentPage: 1,
   logInData: null,
   isLoading: false,
-  vacsPage: 1,
+  vacsPage: 0,
   vacsResp: null,
   selectData: null,
 };

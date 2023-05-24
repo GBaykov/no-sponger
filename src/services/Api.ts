@@ -25,9 +25,7 @@ export const log_in = async () => {
     const response = await axios.get<LogInResponse>(`${API_URL}/2.0/oauth2/password/`, data);
     return response.data;
   } catch (err) {
-    const { error } = err as ErrorResponse;
-
-    throw new Error(`${error.message} with code ${error.code}`);
+    throw new Error(`${err} `);
   }
 };
 const access_resp = getFromStorage('logInResp');
@@ -54,9 +52,7 @@ export const Refresh_token = async () => {
     );
     return response.data;
   } catch (err) {
-    const { error } = err as ErrorResponse;
-
-    throw new Error(`${error.message} with code ${error.code}`);
+    throw new Error(`${err} `);
   }
 };
 
@@ -71,9 +67,7 @@ export const fetchCatalogues = async () => {
     });
     return response.data;
   } catch (err) {
-    const { error } = err as ErrorResponse;
-
-    throw new Error(`${error.message} with code ${error.code}`);
+    throw new Error(`${err} `);
   }
 };
 
@@ -108,8 +102,6 @@ export const fetchVacancies = async (
     const response = await axios.get<Vacancies>(`${API_URL}/2.0/vacancies/`, vacanciesRequestData);
     return response.data;
   } catch (err) {
-    const { error } = err as ErrorResponse;
-
-    throw new Error(`${error.message} with code ${error.code}`);
+    throw new Error(`${err} `);
   }
 };

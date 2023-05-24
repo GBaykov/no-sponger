@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import './App.css';
 import { AppContext } from './store/context';
 import { AppReducer, initialState } from './store/reducer';
@@ -9,6 +9,7 @@ import { ActionType, LogInResponse } from './types';
 import useComponentDidMount from './hooks/useComponentDidMount';
 import { getFromStorage, setToStorage } from './utils/localstorage';
 import { Spinner } from './components/spinner';
+import { getVacancies } from './utils/getVacancies';
 
 function App() {
   const [state, dispatch] = useReducer(AppReducer, initialState);
@@ -18,8 +19,27 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorText, setErrorText] = useState('');
-
   const isComponentMounted = useComponentDidMount();
+
+  console.log(state.currentPage, state.vacsPage);
+
+  const getVacans = useCallback(async () => {
+    dispatch({
+      type: ActionType.SetIsLoading,
+      payload: { isLoading: true },
+    });
+
+    const vacancies = await getVacancies(state);
+    dispatch({
+      type: ActionType.SetVacsResp,
+      payload: { vacsResp: vacancies },
+    });
+
+    dispatch({
+      type: ActionType.SetIsLoading,
+      payload: { isLoading: false },
+    });
+  }, [state.vacsResp, state.vacsPage]);
 
   const logInStoraged = getFromStorage('logInResp');
 
@@ -70,6 +90,11 @@ function App() {
       setAccessData();
     }
   }, [isComponentMounted]);
+  useEffect(() => {
+    if (isComponentMounted) {
+      getVacans();
+    }
+  }, [isComponentMounted, state.currentPage, state.vacsPage]);
 
   return (
     <AppContext.Provider value={contextValue}>

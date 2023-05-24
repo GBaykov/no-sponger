@@ -29,6 +29,10 @@ export const FilterForm = () => {
 
   async function onFormSubmit(e: FormData) {
     dispatch({
+      type: ActionType.SetVacsPage,
+      payload: { vacsPage: 0 },
+    });
+    dispatch({
       type: ActionType.SetIsLoading,
       payload: { isLoading: true },
     });

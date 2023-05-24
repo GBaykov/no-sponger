@@ -18,22 +18,25 @@ export type PaginationProps = {
 // }
 
 export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
+  const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [endOfSet, setEndOfSet] = useState(0);
-  const [beginOfSet, setBeginOfSet] = useState(0);
+  const [beginOfSet, setBeginOfSet] = useState(1);
+  const [endOfSet, setEndOfSet] = useState(state.vacsPage);
 
-  const { state, dispatch } = useContext(AppContext);
-  // const isComponentMounted = useComponentDidMount();
-
-  // useEffect(() => {
-  //   if (isComponentMounted) {
-  //     getVacans();
-  //   }
-  // }, [isComponentMounted]);
-
-  // const getVacans = useCallback(async () => {
+  useEffect(() => {
+    // addRepos(state.userName, state.currentPage);
+    if (state.vacsResp?.total) {
+      const divisible = state.vacsResp?.total;
+      if (divisible > 500) {
+        setPageCount(Math.ceil(500 / itemsPerPage));
+      } else {
+        setPageCount(Math.ceil(divisible / itemsPerPage));
+      }
+    }
+  }, [state.vacsResp?.total]);
+  // const udatepages = async () => {
   //   dispatch({
   //     type: ActionType.SetIsLoading,
   //     payload: { isLoading: true },
@@ -49,34 +52,19 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   //     type: ActionType.SetIsLoading,
   //     payload: { isLoading: false },
   //   });
-  // }, [state.vacsResp]);
-
-  // async function addRepos(userName, currentPage) {
-  //   try {
-  //     setIsLoading(true);
-  //     const repos = await getUserRepos(userName, currentPage);
-  //     dispatch({ type: ACTIONS.setRepos, payload: { repos } });
-  //     setIsLoading(false);
-  //     setIsError(false);
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     setIsError(true);
-  //   }
-  // }
-  useEffect(() => {
-    // addRepos(state.userName, state.currentPage);
-    if (state.vacsResp?.total) {
-      const divisible = state.vacsResp?.total;
-      if (divisible > 500) {
-        setPageCount(Math.ceil(500 / itemsPerPage));
-      } else {
-        setPageCount(Math.ceil(divisible / itemsPerPage));
-      }
-    }
-  }, []);
+  // };
 
   // useEffect(() => {
-  //   setBeginOfSet(state.vacsPage * itemsPerPage - 3);
+  //   udatepages();
+  // }, [state.vacsPage]);
+
+  // useEffect(() => {
+  //   if(state.vacsPage > 1 && state.vacsPage< endOfSet +1){
+  //     setBeginOfSet(state.vacsPage  - 1);
+  //   }
+  //   if(state.vacsPage = 1){
+  //     setBeginOfSet(1);
+  //   }
 
   //   if (state.vacsResp?.total) {
   //     const remnant = (state.vacsPage * itemsPerPage) % state.vacsResp?.total;
@@ -89,21 +77,34 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   type SelectedItem = {
     selected: number;
   };
-
+  // console.log(state.vacsPage);
   const handlePageClick = (event: SelectedItem) => {
-    console.log(event.selected);
-    dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: event.selected + 1 } });
+    console.log(event.selected, state.vacsPage + 1);
+    if (state.vacsResp?.total && event.selected < state.vacsResp?.total) {
+      dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected } });
+    }
   };
 
-  const load = isLoading ? <Spinner /> : <CardList />;
+  // const aginatinData = [
+  //   { classname: 'page-item previous-item', content: '<' },
+  //   { classname: 'page-item', content: { beginOfSet } },
+  //   { classname: 'page-item', content: { state.vacsPage } },
+  //   { classname: 'page-item', content: { endOfSet } },
+  //   { classname: 'page-item next-item', content: '>' },
+  // ];
 
-  //   function pageCountSet() {
-  //     return (
-  //       <p className="page-count">
-  //         {beginOfSet}-{endOfSet} of {state.reposLenght} items
-  //       </p>
-  //     );
-  //   }
+  const load = isLoading ? <Spinner /> : <CardList />;
+  const Pagination = () => {
+    return (
+      <div className="paginate-count">
+        <p className="page-item previous-item">{'<'}</p>
+        <p className="page-item">{beginOfSet}</p>
+        <p className="page-item">{state.vacsPage}</p>
+        <p className="page-item">{endOfSet}</p>
+        <p className="page-item next-item">{'>'}</p>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -111,11 +112,13 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
       <div className="paginate-count">
         {/* {pageCountSet()} */}
         <ReactPaginate
-          breakLabel="..."
+          breakLabel={null}
           nextLabel=" >"
           onPageChange={handlePageClick}
-          // pageRangeDisplayed={2}
-          // marginPagesDisplayed={1}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={0}
+          // initialPage={state.vacsPage}
+          forcePage={state.vacsPage}
           pageCount={pageCount}
           previousLabel="< "
           renderOnZeroPageCount={null}

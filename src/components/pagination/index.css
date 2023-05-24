@@ -16,19 +16,6 @@
   list-style-type: none;
   margin: 0 0 0 -15px;
 }
-.active-page {
-  padding: 0px 8px;
-  width: 32px;
-  height: 32px;
-  background-color: #5e96fc;
-  border: 1px solid #5e96fc;
-  border-radius: 4px;
-}
-
-.active-link {
-  color: #ffffff;
-}
-
 .page-item {
   box-sizing: border-box;
   padding: 0px 8px;
@@ -50,4 +37,39 @@
 }
 .page-item:active {
   color: #0064eb;
+}
+.page-item {
+  box-sizing: border-box;
+  padding: 0px 8px;
+  width: 32px;
+  height: 32px;
+  background: #ffffff;
+  border: 1px solid #d5d6dc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  color: #808080;
+  text-align: center;
+  cursor: pointer;
+}
+.page-item:not(:last-child) {
+  margin-right: 16px;
+}
+.page-item:active {
+  color: #0064eb;
+}
+.active-page {
+  padding: 0px 8px;
+  width: 32px;
+  height: 32px;
+  background-color: #5e96fc;
+  border: 1px solid #5e96fc;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.active-link {
+  color: #ffffff;
 }

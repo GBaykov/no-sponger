@@ -13,32 +13,6 @@ import { EmptyState } from '../../components/empty-state';
 
 export const MainPage = () => {
   const { state, dispatch } = useContext(AppContext);
-  const isComponentMounted = useComponentDidMount();
-
-  useEffect(() => {
-    if (isComponentMounted) {
-      getVacans();
-    }
-  }, [isComponentMounted, state.currentPage, state.vacsPage]);
-  console.log(state.currentPage, state.vacsPage);
-
-  const getVacans = useCallback(async () => {
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: true },
-    });
-
-    const vacancies = await getVacancies(state);
-    dispatch({
-      type: ActionType.SetVacsResp,
-      payload: { vacsResp: vacancies },
-    });
-
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: false },
-    });
-  }, [state.vacsResp]);
 
   const contentOnPage =
     !state.isLoading && state.vacsResp && state.vacsResp.total === 0 ? (
