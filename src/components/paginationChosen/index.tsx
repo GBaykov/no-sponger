@@ -20,9 +20,11 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(chosen);
+  const [currentItems, setCurrentItems] = useState<Vacancy[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [beginOfSet, setBeginOfSet] = useState(1);
+  const [midOfSet, setMidOfSet] = useState(1);
   const [endOfSet, setEndOfSet] = useState(state.vacsPage);
 
   // useEffect(() => {
@@ -40,16 +42,33 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
 
   useEffect(() => {
     setItemOffset(chosen);
+    if (itemOffset) {
+      setPageCount(Math.ceil(itemOffset?.length / itemsPerPage));
+    }
   }, [chosen]);
+
+  useEffect(() => {
+    setBeginOfSet(state.currentPage * itemsPerPage - 3);
+    let remnant = 0;
+    if (itemOffset) {
+      remnant = (state.currentPage * itemsPerPage) % itemOffset?.length;
+    }
+    const endOfS =
+      remnant >= 4 ? state.currentPage * itemsPerPage : state.currentPage * itemsPerPage - remnant;
+    setEndOfSet(endOfS);
+    if (itemOffset) {
+      const currentItems = itemOffset.slice(beginOfSet, endOfS);
+
+      setCurrentItems(currentItems);
+    }
+  }, [state.currentPage, chosen, chosen?.length, itemOffset?.length]);
 
   type SelectedItem = {
     selected: number;
   };
 
   const handlePageClick = (event: SelectedItem) => {
-    if (state.vacsResp?.total && event.selected < state.vacsResp?.total) {
-      dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected } });
-    }
+    dispatch({ type: ActionType.SetCurrentPage, payload: { currentPage: event.selected + 1 } });
   };
 
   const load = () => {
@@ -63,6 +82,7 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   return (
     <>
       {load}
+      {isLoading ? <Spinner /> : <CardList vacancies={currentItems} />}
       <div className="paginate-count">
         {/* {pageCountSet()} */}
         <ReactPaginate

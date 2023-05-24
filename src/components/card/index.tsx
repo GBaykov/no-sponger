@@ -85,7 +85,11 @@ export const Card = ({ vacancy }: CardProps) => {
       <div className="card__content">
         <div className="content__head ">
           <p className="card__head-title">{profession}</p>
-          <button onClick={(e) => onStarClick(e)} className="star-btn">
+          <button
+            onClick={(e) => onStarClick(e)}
+            className="star-btn"
+            data-elem={`vacancy-${vacancy.id}-shortlist-button`}
+          >
             {' '}
             <img src={isChosen ? star : emptyStar} alt="star" className="card__head-star" />
           </button>

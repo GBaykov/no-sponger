@@ -172,6 +172,7 @@ export const FilterForm = () => {
             <p className="form-text">Отрасль</p>
             {state.selectData && (
               <Select
+                data-elem={'industry-select'}
                 clearable
                 value={form.values.catalogue}
                 name="catalogue"
@@ -192,6 +193,7 @@ export const FilterForm = () => {
             )}
             <p className="form-text">Оклад</p>
             <NumberInput
+              data-elem="salary-from-input"
               value={form.values.from}
               name="from"
               onChange={(e) => onInputChange(e, 'from')}
@@ -218,6 +220,7 @@ export const FilterForm = () => {
             />
 
             <NumberInput
+              data-elem="salary-to-input"
               value={form.values.to}
               onChange={(e) => onInputChange(e, 'to')}
               name="to"
@@ -244,6 +247,7 @@ export const FilterForm = () => {
           </div>
           <Group position="center" mt={20}>
             <Button
+              data-elem="search-button"
               w="100%"
               h={42}
               type="submit"

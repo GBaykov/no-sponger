@@ -8,13 +8,13 @@ import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { Vacancy } from '../../types/vacancies';
 
 export type CardListProps = {
-  vacancies: Vacancy[];
+  vacancies: Vacancy[] | null;
 };
 export const CardList = ({ vacancies }: CardListProps) => {
   return (
     <section className="card-list">
       {vacancies?.map((vacancy) => {
-        return <Card key={vacancy.id} vacancy={vacancy} />;
+        return <Card key={vacancy.id} vacancy={vacancy} data-elem={`vacancy-${vacancy.id}`} />;
       })}
     </section>
   );

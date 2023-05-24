@@ -47,13 +47,14 @@ export const Searchbar = () => {
       <div className="searchbar">
         <img src={search} alt="" className="searchbar-icon" />
         <input
+          data-elem="search-input"
           onChange={(e) => onInputChange(e)}
           type="text"
           value={state.searhWord}
           className="searchbar-input"
           placeholder="Введите название вакансии"
         />
-        <button type="submit" className="searchbar-btn">
+        <button type="submit" className="searchbar-btn" data-elem="search-button">
           Поиск
         </button>
       </div>
