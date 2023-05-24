@@ -5,57 +5,16 @@ import { ActionType, CardType } from '../../types';
 import { AppContext } from '../../store/context';
 import { getVacancies } from '../../utils/getVacancies';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
+import { Vacancy } from '../../types/vacancies';
 
-export const CardList = () => {
-  const { state, dispatch } = useContext(AppContext);
-  // const isComponentMounted = useComponentDidMount();
-
-  // useEffect(() => {
-  //   if (isComponentMounted) {
-  //     getVacans();
-  //   }
-  // }, [isComponentMounted]);
-
-  // const getVacans = useCallback(async () => {
-  //   dispatch({
-  //     type: ActionType.SetIsLoading,
-  //     payload: { isLoading: true },
-  //   });
-
-  //   const vacancies = await getVacancies(state);
-  //   dispatch({
-  //     type: ActionType.SetVacsResp,
-  //     payload: { vacsResp: vacancies },
-  //   });
-
-  //   dispatch({
-  //     type: ActionType.SetIsLoading,
-  //     payload: { isLoading: false },
-  //   });
-  // }, [state.vacsResp]);
-
-  // useEffect(() => {
-  //   getVacans();
-  // }, []);
-
-  const vacancies = state.vacsResp?.objects;
-
+export type CardListProps = {
+  vacancies: Vacancy[];
+};
+export const CardList = ({ vacancies }: CardListProps) => {
   return (
     <section className="card-list">
       {vacancies?.map((vacancy) => {
-        return (
-          <Card
-            key={vacancy.id}
-            // profession={vacancy.profession}
-            // town={vacancy.town.title}
-            // type_of_work={vacancy.type_of_work.title}
-            // payment_to={vacancy.payment_to}
-            // payment_from={vacancy.payment_from}
-            // currency={vacancy.currency}
-            // payment={vacancy.payment}
-            vacancy={vacancy}
-          />
-        );
+        return <Card key={vacancy.id} vacancy={vacancy} />;
       })}
     </section>
   );

@@ -25,16 +25,12 @@ export const MainPage = () => {
     <main className="main">
       <div className="main__content">
         <FilterForm />
-        {/* {MainContent()} */}
         {state.isLoading ? (
           <Spinner />
         ) : (
           <section className="main__content-field">
             <Searchbar />
-            {/* <CardList /> */}
             {contentOnPage}
-
-            {/* <PaginatedItems itemsPerPage={4} /> */}
           </section>
         )}
       </div>

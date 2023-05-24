@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useState, useEffect } from 'react';
 import './index.css';
 import star from '../../assets/star.svg';
 import emptyStar from '../../assets/empty-star.svg';
@@ -8,13 +8,6 @@ import { Vacancy } from '../../types/vacancies';
 import { getFromStorage, removeFromStorage, setToStorage } from '../../utils/localstorage';
 
 export type CardProps = {
-  // profession: string;
-  // town: string;
-  // type_of_work: string;
-  // payment_to?: number;
-  // payment_from?: number;
-  // currency: string;
-  // payment: number | null;
   vacancy: Vacancy;
 };
 
@@ -22,12 +15,12 @@ export const Card = ({ vacancy }: CardProps) => {
   const [isChosen, setIsChosen] = useState(false);
   const { profession, town, type_of_work, payment_to, payment_from, payment, currency, id } =
     vacancy;
-
+  // removeFromStorage('chosen');
   const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setIsChosen(!isChosen);
     if (isChosen) {
-      const vacs = getFromStorage('vacancies');
+      const vacs = getFromStorage('chosen');
       if (vacs) {
         const vacsArr: Vacancy[] = JSON.parse(vacs);
         const newVacsArr = vacsArr.filter((item) => item.id !== vacancy.id);
@@ -35,19 +28,29 @@ export const Card = ({ vacancy }: CardProps) => {
         setToStorage(`chosen`, vacsToString);
       }
     } else {
-      const vacs = getFromStorage('vacancies');
+      const vacs = getFromStorage('chosen');
       if (vacs) {
         const vacsArr: Vacancy[] = JSON.parse(vacs);
         vacsArr.push(vacancy);
         const vacsToString = JSON.stringify(vacsArr);
-        setToStorage(`chosen`, `vacsToString`);
+        setToStorage(`chosen`, vacsToString);
       } else {
         const vacancyToString = JSON.stringify(vacancy);
         setToStorage(`chosen`, `[${vacancyToString}]`);
-        console.log(vacancy);
       }
     }
   };
+
+  useEffect(() => {
+    const vacs = getFromStorage('chosen');
+    if (vacs) {
+      const vacsArr: Vacancy[] = JSON.parse(vacs);
+      const isInChosen = vacsArr.find((item) => item.id === vacancy.id);
+      if (isInChosen) {
+        setIsChosen(true);
+      }
+    }
+  }, []);
 
   const PaymentBlock = () => {
     if (!payment_to && !payment_from && payment) {

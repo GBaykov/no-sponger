@@ -83,7 +83,7 @@ export type Vacancy = {
 };
 
 export type Vacancies = {
-  objects: [Vacancy];
+  objects: Vacancy[];
   total: number;
   corrected_keyword: string;
   more: boolean;

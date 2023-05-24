@@ -8,34 +8,39 @@ import { Card } from '../card';
 import { CardList } from '../card-list';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { getVacancies } from '../../utils/getVacancies';
+import { Vacancy } from '../../types/vacancies';
+import { getFromStorage } from '../../utils/localstorage';
 
 export type PaginationProps = {
   itemsPerPage: number;
+  chosen: Vacancy[] | null;
 };
 
-// function Items(cards: [CardType]) {
-//   return <>{cards && cards.map((card) => <Card {...card} />)}</>;
-// }
-
-export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
+export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProps) {
   const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(chosen);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [beginOfSet, setBeginOfSet] = useState(1);
   const [endOfSet, setEndOfSet] = useState(state.vacsPage);
 
+  // useEffect(() => {
+  //   // addRepos(state.userName, state.currentPage);
+  //   if (state.vacsResp?.total) {
+  //     const divisible = state.vacsResp?.total;
+  //     if (divisible > 500) {
+  //       setPageCount(Math.ceil(500 / itemsPerPage));
+  //     } else {
+  //       setPageCount(Math.ceil(divisible / itemsPerPage));
+  //     }
+  //   }
+  // }, [state.vacsResp?.total]);
+  console.log(chosen);
+
   useEffect(() => {
-    // addRepos(state.userName, state.currentPage);
-    if (state.vacsResp?.total) {
-      const divisible = state.vacsResp?.total;
-      if (divisible > 500) {
-        setPageCount(Math.ceil(500 / itemsPerPage));
-      } else {
-        setPageCount(Math.ceil(divisible / itemsPerPage));
-      }
-    }
-  }, [state.vacsResp?.total]);
+    setItemOffset(chosen);
+  }, [chosen]);
 
   type SelectedItem = {
     selected: number;
@@ -46,19 +51,18 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
       dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected } });
     }
   };
-  // const { state, dispatch } = useContext(AppContext);
 
   const load = () => {
-    const vacancies = state.vacsResp?.objects;
     let content: JSX.Element | null = null;
-    if (vacancies) {
-      content = isLoading ? <Spinner /> : <CardList vacancies={vacancies} />;
+    if (chosen) {
+      content = isLoading ? <Spinner /> : <CardList vacancies={chosen} />;
     }
     return content;
   };
+
   return (
     <>
-      {load()}
+      {load}
       <div className="paginate-count">
         {/* {pageCountSet()} */}
         <ReactPaginate
