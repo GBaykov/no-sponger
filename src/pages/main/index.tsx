@@ -16,7 +16,7 @@ export const MainPage = () => {
 
   const contentOnPage =
     !state.isLoading && state.vacsResp && state.vacsResp.total === 0 ? (
-      <EmptyState />
+      <EmptyState isChosen={false} />
     ) : (
       <PaginatedItems itemsPerPage={4} />
     );

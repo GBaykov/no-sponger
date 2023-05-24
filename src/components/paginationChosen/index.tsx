@@ -9,7 +9,7 @@ import { CardList } from '../card-list';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { getVacancies } from '../../utils/getVacancies';
 import { Vacancy } from '../../types/vacancies';
-import { getFromStorage } from '../../utils/localstorage';
+import { getFromStorage, removeFromStorage } from '../../utils/localstorage';
 
 export type PaginationProps = {
   itemsPerPage: number;
@@ -19,7 +19,6 @@ export type PaginationProps = {
 export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProps) {
   const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(chosen);
   const [currentItems, setCurrentItems] = useState<Vacancy[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -27,41 +26,29 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   const [midOfSet, setMidOfSet] = useState(1);
   const [endOfSet, setEndOfSet] = useState(state.vacsPage);
 
-  // useEffect(() => {
-  //   // addRepos(state.userName, state.currentPage);
-  //   if (state.vacsResp?.total) {
-  //     const divisible = state.vacsResp?.total;
-  //     if (divisible > 500) {
-  //       setPageCount(Math.ceil(500 / itemsPerPage));
-  //     } else {
-  //       setPageCount(Math.ceil(divisible / itemsPerPage));
-  //     }
-  //   }
-  // }, [state.vacsResp?.total]);
-  console.log(chosen);
-
   useEffect(() => {
-    setItemOffset(chosen);
-    if (itemOffset) {
-      setPageCount(Math.ceil(itemOffset?.length / itemsPerPage));
+    if (chosen && chosen?.length > 0) {
+      setPageCount(Math.ceil(chosen?.length / itemsPerPage));
     }
   }, [chosen]);
 
   useEffect(() => {
     setBeginOfSet(state.currentPage * itemsPerPage - 3);
     let remnant = 0;
-    if (itemOffset) {
-      remnant = (state.currentPage * itemsPerPage) % itemOffset?.length;
+    if (chosen) {
+      remnant = (state.currentPage * itemsPerPage) % chosen?.length;
     }
     const endOfS =
       remnant >= 4 ? state.currentPage * itemsPerPage : state.currentPage * itemsPerPage - remnant;
     setEndOfSet(endOfS);
-    if (itemOffset) {
-      const currentItems = itemOffset.slice(beginOfSet, endOfS);
+  }, [state.currentPage, chosen?.length]);
 
+  useEffect(() => {
+    if (chosen) {
+      const currentItems = chosen.slice(beginOfSet - 1, endOfSet);
       setCurrentItems(currentItems);
     }
-  }, [state.currentPage, chosen, chosen?.length, itemOffset?.length]);
+  }, [beginOfSet, endOfSet, chosen?.length]);
 
   type SelectedItem = {
     selected: number;
@@ -74,15 +61,15 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   const load = () => {
     let content: JSX.Element | null = null;
     if (chosen) {
-      content = isLoading ? <Spinner /> : <CardList vacancies={chosen} />;
+      content = isLoading ? <Spinner /> : <CardList vacancies={currentItems} />;
     }
     return content;
   };
-
+  console.log(beginOfSet, endOfSet);
+  // removeFromStorage('chosen');
   return (
     <>
-      {load}
-      {isLoading ? <Spinner /> : <CardList vacancies={currentItems} />}
+      {load()}
       <div className="paginate-count">
         {/* {pageCountSet()} */}
         <ReactPaginate

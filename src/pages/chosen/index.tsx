@@ -18,7 +18,13 @@ export const ChosenPage = () => {
   console.log(chosen);
   return (
     <main className="main">
-      {chosen ? <PaginatedChosen itemsPerPage={4} chosen={chosen} /> : <EmptyState />}
+      <div className="main__chosen-field">
+        {chosen && chosen?.length > 0 ? (
+          <PaginatedChosen itemsPerPage={4} chosen={chosen} />
+        ) : (
+          <EmptyState isChosen={true} />
+        )}
+      </div>
     </main>
   );
 };
