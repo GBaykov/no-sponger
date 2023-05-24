@@ -21,8 +21,6 @@ function App() {
   const [errorText, setErrorText] = useState('');
   const isComponentMounted = useComponentDidMount();
 
-  console.log(state.currentPage, state.vacsPage);
-
   const getVacans = useCallback(async () => {
     dispatch({
       type: ActionType.SetIsLoading,

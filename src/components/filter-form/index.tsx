@@ -36,7 +36,6 @@ export const FilterForm = () => {
       type: ActionType.SetIsLoading,
       payload: { isLoading: true },
     });
-    console.log('ONSUBMIT');
     const vacancies = await getVacancies(state);
     dispatch({
       type: ActionType.SetVacsResp,

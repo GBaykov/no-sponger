@@ -4,33 +4,52 @@ import star from '../../assets/star.svg';
 import emptyStar from '../../assets/empty-star.svg';
 import location from '../../assets/location.svg';
 import dot from '../../assets/dot.svg';
+import { Vacancy } from '../../types/vacancies';
+import { getFromStorage, removeFromStorage, setToStorage } from '../../utils/localstorage';
 
 export type CardProps = {
-  profession: string;
-  town: string;
-  type_of_work: string;
-  payment_to?: number;
-  payment_from?: number;
-  currency: string;
-  payment: number | null;
+  // profession: string;
+  // town: string;
+  // type_of_work: string;
+  // payment_to?: number;
+  // payment_from?: number;
+  // currency: string;
+  // payment: number | null;
+  vacancy: Vacancy;
 };
 
-export const Card = ({
-  profession,
-  town,
-  type_of_work,
-  payment_to,
-  payment_from,
-  payment,
-  currency,
-}: CardProps) => {
+export const Card = ({ vacancy }: CardProps) => {
   const [isChosen, setIsChosen] = useState(false);
+  const { profession, town, type_of_work, payment_to, payment_from, payment, currency, id } =
+    vacancy;
 
-  const onStarClick = (e: react.MouseEvent<HTMLImageElement, MouseEvent>) => {
+  const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setIsChosen(!isChosen);
+    if (isChosen) {
+      const vacs = getFromStorage('vacancies');
+      if (vacs) {
+        const vacsArr: Vacancy[] = JSON.parse(vacs);
+        const newVacsArr = vacsArr.filter((item) => item.id !== vacancy.id);
+        const vacsToString = JSON.stringify(newVacsArr);
+        setToStorage(`chosen`, vacsToString);
+      }
+    } else {
+      const vacs = getFromStorage('vacancies');
+      if (vacs) {
+        const vacsArr: Vacancy[] = JSON.parse(vacs);
+        vacsArr.push(vacancy);
+        const vacsToString = JSON.stringify(vacsArr);
+        setToStorage(`chosen`, `vacsToString`);
+      } else {
+        const vacancyToString = JSON.stringify(vacancy);
+        setToStorage(`chosen`, `[${vacancyToString}]`);
+        console.log(vacancy);
+      }
+    }
   };
-  const PaymentBloch = () => {
+
+  const PaymentBlock = () => {
     if (!payment_to && !payment_from && payment) {
       return (
         <p className="info-salary">
@@ -63,15 +82,13 @@ export const Card = ({
       <div className="card__content">
         <div className="content__head ">
           <p className="card__head-title">{profession}</p>
-          <img
-            onClick={(e) => onStarClick(e)}
-            src={isChosen ? star : emptyStar}
-            alt="star"
-            className="card__head-star"
-          />
+          <button onClick={(e) => onStarClick(e)} className="star-btn">
+            {' '}
+            <img src={isChosen ? star : emptyStar} alt="star" className="card__head-star" />
+          </button>
         </div>
         <div className="content__info ">
-          {PaymentBloch()}
+          {PaymentBlock()}
           {/* {payment_to ? (
             <p className="info-salary">
               з/п {payment_from} - {payment_to} {currency}
@@ -93,11 +110,11 @@ export const Card = ({
           )} */}
 
           <img src={dot} alt="dot" className="dot" />
-          <p className="info-typeofwork card-text">{type_of_work}</p>
+          <p className="info-typeofwork card-text">{type_of_work.title}</p>
         </div>
         <div className="card__content-location ">
           <img src={location} alt="location" className="location-icon" />
-          <p className="card-text">{town}</p>
+          <p className="card-text">{town.title}</p>
         </div>
       </div>
     </div>

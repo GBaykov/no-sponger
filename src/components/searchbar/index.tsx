@@ -40,7 +40,6 @@ export const Searchbar = () => {
       type: ActionType.SetIsLoading,
       payload: { isLoading: false },
     });
-    console.log(vacancies);
   }
 
   return (

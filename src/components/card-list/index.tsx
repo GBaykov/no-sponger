@@ -46,13 +46,14 @@ export const CardList = () => {
         return (
           <Card
             key={vacancy.id}
-            profession={vacancy.profession}
-            town={vacancy.town.title}
-            type_of_work={vacancy.type_of_work.title}
-            payment_to={vacancy.payment_to}
-            payment_from={vacancy.payment_from}
-            currency={vacancy.currency}
-            payment={vacancy.payment}
+            // profession={vacancy.profession}
+            // town={vacancy.town.title}
+            // type_of_work={vacancy.type_of_work.title}
+            // payment_to={vacancy.payment_to}
+            // payment_from={vacancy.payment_from}
+            // currency={vacancy.currency}
+            // payment={vacancy.payment}
+            vacancy={vacancy}
           />
         );
       })}

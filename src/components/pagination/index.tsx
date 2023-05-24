@@ -77,9 +77,8 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   type SelectedItem = {
     selected: number;
   };
-  // console.log(state.vacsPage);
+
   const handlePageClick = (event: SelectedItem) => {
-    console.log(event.selected, state.vacsPage + 1);
     if (state.vacsResp?.total && event.selected < state.vacsResp?.total) {
       dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected } });
     }
