@@ -13,12 +13,11 @@ export const EmptyState = () => {
   const onButtoneClick = async () => {
     dispatch({
       type: ActionType.SetActiveLink,
-      payload: { activeLink: '' },
+      payload: { activeLink: '/main' },
     });
-
     navigate('/main');
   };
-
+  console.log(state.activeLink);
   useEffect(() => {
     dispatch({
       type: ActionType.SetSearchWord,

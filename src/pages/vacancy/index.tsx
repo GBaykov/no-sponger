@@ -16,12 +16,14 @@ export const VacancyPage = () => {
 
   return (
     <main className="main vacancy-page">
-      {state.currentVacancy !== null && <Card vacancy={state.currentVacancy} isBlack={true} />}
-      <section className="vacancy-page__text">
-        <TypographyStylesProvider>
-          <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
-        </TypographyStylesProvider>
-      </section>
+      <div className="vacancy-page__content">
+        {state.currentVacancy !== null && <Card vacancy={state.currentVacancy} isBlack={true} />}
+        <section className="vacancy-page__text">
+          <TypographyStylesProvider>
+            <div dangerouslySetInnerHTML={{ __html: `${description}` }} />
+          </TypographyStylesProvider>
+        </section>
+      </div>
     </main>
   );
 };

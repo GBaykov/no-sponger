@@ -107,7 +107,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
       onClick={() => onCardClick()}
     >
       <div className="card__content">
-        <div className="content__head ">
+        <div className={`${isBlack ? 'content__head blackTitle' : 'content__head'}`}>
           <p className={`${isBlack ? 'card__head-title blackTitle' : 'card__head-title'}`}>
             {profession}
           </p>

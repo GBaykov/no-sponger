@@ -37,7 +37,7 @@ function App() {
       type: ActionType.SetIsLoading,
       payload: { isLoading: false },
     });
-  }, [state.vacsResp, state.vacsPage]);
+  }, [state.vacsResp]);
 
   const logInStoraged = getFromStorage('logInResp');
 
@@ -88,11 +88,12 @@ function App() {
       setAccessData();
     }
   }, [isComponentMounted]);
+
   useEffect(() => {
     if (isComponentMounted) {
       getVacans();
     }
-  }, [isComponentMounted, state.currentPage, state.vacsPage]);
+  }, [isComponentMounted, state.vacsPage]);
 
   return (
     <AppContext.Provider value={contextValue}>

@@ -18,6 +18,13 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 420px) {
+  .searchbar {
+    gap: 5px;
+    padding: 0 6px;
+  }
+}
+
 .searchbar-icon {
   width: 12.57px;
   height: 12.5px;
@@ -37,6 +44,13 @@ input::placeholder {
   line-height: 21px;
 
   color: #acadb9;
+}
+
+@media (max-width: 420px) {
+  input::placeholder {
+    font-size: 12px;
+    line-height: 18px;
+  }
 }
 
 .searchbar-btn {
