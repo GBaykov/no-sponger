@@ -14,6 +14,7 @@ export type AppState = {
   catalogues: CataloguesResponse | null;
   selectData: SelectedData | null;
   currentVacancy: Vacancy | null;
+  chosen: Vacancy[] | null;
 };
 export enum ActionType {
   SetTo,
@@ -29,10 +30,15 @@ export enum ActionType {
   SetCatalogues,
   SetSelectData,
   SetCurrentVacancy,
+  SetChosen,
 }
 export interface SetCurrentVacancy {
   type: ActionType.SetCurrentVacancy;
   payload: { currentVacancy: Vacancy };
+}
+export interface SetChosen {
+  type: ActionType.SetChosen;
+  payload: { chosen: Vacancy[] };
 }
 
 export interface SetSelectData {
@@ -108,6 +114,7 @@ export type StateActions =
   | SetCatalogues
   | SetSelectData
   | SetCurrentVacancy
+  | SetChosen
   | SetVacsPage;
 
 export type CardType = {

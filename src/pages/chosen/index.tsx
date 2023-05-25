@@ -6,35 +6,59 @@ import PaginatedChosen from '../../components/paginationChosen';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import useComponentDidMount from '../../hooks/useComponentDidMount';
 
 export const ChosenPage = () => {
-  const [chosen, setVacancies] = useState<Vacancy[] | null>(null);
+  // const [chosen, setVacancies] = useState<Vacancy[] | null>(null);
   const { state, dispatch } = useContext(AppContext);
   const navigate = useNavigate();
+  const isComponentMounted = useComponentDidMount();
+
+  // useEffect(() => {
+  //   if (isComponentMounted) {
+  //     const vacs = getFromStorage('chosen');
+  //     if (vacs) {
+  //       const vacsArr: Vacancy[] = JSON.parse(vacs);
+  //       console.log(vacsArr);
+  //       setVacancies(vacsArr);
+  //     }
+  //   }
+  // }, [isComponentMounted]);
 
   useEffect(() => {
     const vacs = getFromStorage('chosen');
     if (vacs) {
-      console.log(vacs);
       const vacsArr: Vacancy[] = JSON.parse(vacs);
-      setVacancies(vacsArr);
+      console.log(vacsArr);
+      dispatch({
+        type: ActionType.SetCurrentPage,
+        payload: { currentPage: 1 },
+      });
+      dispatch({
+        type: ActionType.SetChosen,
+        payload: { chosen: vacsArr },
+      });
     }
   }, []);
+  console.log(state.chosen);
 
-  // const renderChosen = () => {
-  //   if (chosen && chosen?.length > 0) {
-  //     return <PaginatedChosen itemsPerPage={4} chosen={chosen} />;
-  //   } else {
-  //     dispatch({
-  //       type: ActionType.SetActiveLink,
-  //       payload: { activeLink: '/empty' },
-  //     });
-  //     navigate('/empty');
-  //   }
-  // };
+  function renderChosen() {
+    const vacs = getFromStorage('chosen');
+    if (vacs) {
+      const vacsArr: Vacancy[] = JSON.parse(vacs);
+      return <PaginatedChosen itemsPerPage={4} chosen={vacsArr} />;
+    }
+    // else {
+    //   dispatch({
+    //     type: ActionType.SetActiveLink,
+    //     payload: { activeLink: '/empty' },
+    //   });
+    //   navigate('/empty');
+    // }
+  }
 
   const redirectToEmpty = () => {
-    if (!chosen || chosen?.length < 0) {
+    if (!state.chosen || state.chosen?.length < 0) {
       dispatch({
         type: ActionType.SetActiveLink,
         payload: { activeLink: '/empty' },
@@ -45,7 +69,8 @@ export const ChosenPage = () => {
 
   useEffect(() => {
     redirectToEmpty();
-  }, [chosen, chosen?.length]);
+    console.log(state.chosen);
+  }, [state.chosen, state.chosen?.length]);
 
   return (
     <main className="main">
@@ -55,7 +80,11 @@ export const ChosenPage = () => {
         ) : (
           <EmptyState isChosen={true} />
         )} */}
-        <PaginatedChosen itemsPerPage={4} chosen={chosen} />
+
+        {state.chosen && state.chosen?.length > 0 && (
+          <PaginatedChosen itemsPerPage={4} chosen={state.chosen} />
+        )}
+        {/* {redirectToEmpty} */}
         {/* {renderChosen()} */}
       </div>
     </main>

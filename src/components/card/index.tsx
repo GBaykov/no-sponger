@@ -24,6 +24,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
 
   const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
     setIsChosen(!isChosen);
     if (isChosen) {
       const vacs = getFromStorage('chosen');
@@ -45,6 +46,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
         setToStorage(`chosen`, `[${vacancyToString}]`);
       }
     }
+    e.stopPropagation();
   };
 
   useEffect(() => {

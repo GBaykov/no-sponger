@@ -21,10 +21,8 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   const [pageCount, setPageCount] = useState(0);
   const [currentItems, setCurrentItems] = useState<Vacancy[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [beginOfSet, setBeginOfSet] = useState(1);
-  const [midOfSet, setMidOfSet] = useState(1);
-  const [endOfSet, setEndOfSet] = useState(state.vacsPage);
+  const [endOfSet, setEndOfSet] = useState(state.currentPage);
 
   useEffect(() => {
     if (chosen && chosen?.length > 0) {
@@ -65,6 +63,7 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
     }
     return content;
   };
+  console.log(state.currentPage);
   console.log(beginOfSet, endOfSet);
   // removeFromStorage('chosen');
   return (
@@ -78,7 +77,8 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={0}
-          initialPage={state.vacsPage}
+          // initialPage={0}
+          // initialPage={0}
           // forcePage={state.vacsPage}
           pageCount={pageCount}
           previousLabel="< "
