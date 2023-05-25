@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import './index.css';
 import { Vacancy } from '../../types/vacancies';
 import { getFromStorage } from '../../utils/localstorage';
@@ -6,35 +6,30 @@ import PaginatedChosen from '../../components/paginationChosen';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import useComponentDidMount from '../../hooks/useComponentDidMount';
 
 export const ChosenPage = () => {
-  const [chosen, setVacancies] = useState<Vacancy[] | null>(null);
   const { state, dispatch } = useContext(AppContext);
   const navigate = useNavigate();
+  const isComponentMounted = useComponentDidMount();
 
   useEffect(() => {
     const vacs = getFromStorage('chosen');
     if (vacs) {
-      console.log(vacs);
       const vacsArr: Vacancy[] = JSON.parse(vacs);
-      setVacancies(vacsArr);
+      dispatch({
+        type: ActionType.SetCurrentPage,
+        payload: { currentPage: 1 },
+      });
+      dispatch({
+        type: ActionType.SetChosen,
+        payload: { chosen: vacsArr },
+      });
     }
   }, []);
 
-  // const renderChosen = () => {
-  //   if (chosen && chosen?.length > 0) {
-  //     return <PaginatedChosen itemsPerPage={4} chosen={chosen} />;
-  //   } else {
-  //     dispatch({
-  //       type: ActionType.SetActiveLink,
-  //       payload: { activeLink: '/empty' },
-  //     });
-  //     navigate('/empty');
-  //   }
-  // };
-
   const redirectToEmpty = () => {
-    if (!chosen || chosen?.length < 0) {
+    if (!state.chosen || state.chosen?.length === 0) {
       dispatch({
         type: ActionType.SetActiveLink,
         payload: { activeLink: '/empty' },
@@ -44,19 +39,17 @@ export const ChosenPage = () => {
   };
 
   useEffect(() => {
-    redirectToEmpty();
-  }, [chosen, chosen?.length]);
+    if (isComponentMounted) {
+      redirectToEmpty();
+    }
+  }, [isComponentMounted, state.chosen, state.chosen?.length]);
 
   return (
     <main className="main">
       <div className="main__chosen-field">
-        {/* {chosen && chosen?.length > 0 ? (
-          <PaginatedChosen itemsPerPage={4} chosen={chosen} />
-        ) : (
-          <EmptyState isChosen={true} />
-        )} */}
-        <PaginatedChosen itemsPerPage={4} chosen={chosen} />
-        {/* {renderChosen()} */}
+        {state.chosen && state.chosen?.length > 0 && (
+          <PaginatedChosen itemsPerPage={4} chosen={state.chosen} />
+        )}
       </div>
     </main>
   );

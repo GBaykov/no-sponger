@@ -5,7 +5,7 @@ import emptyStar from '../../assets/empty-star.svg';
 import location from '../../assets/location.svg';
 import dot from '../../assets/dot.svg';
 import { Vacancy } from '../../types/vacancies';
-import { getFromStorage, removeFromStorage, setToStorage } from '../../utils/localstorage';
+import { getFromStorage, setToStorage } from '../../utils/localstorage';
 import { ActionType } from '../../types';
 import { AppContext } from '../../store/context';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
 
   const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+
     setIsChosen(!isChosen);
     if (isChosen) {
       const vacs = getFromStorage('chosen');
@@ -45,6 +46,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
         setToStorage(`chosen`, `[${vacancyToString}]`);
       }
     }
+    e.stopPropagation();
   };
 
   useEffect(() => {
@@ -105,7 +107,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
       onClick={() => onCardClick()}
     >
       <div className="card__content">
-        <div className="content__head ">
+        <div className={`${isBlack ? 'content__head blackTitle' : 'content__head'}`}>
           <p className={`${isBlack ? 'card__head-title blackTitle' : 'card__head-title'}`}>
             {profession}
           </p>

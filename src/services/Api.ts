@@ -1,8 +1,7 @@
 import React from 'react';
 import { API_URL, login, password, client_id, client_secret, hr, secretKey } from '../constants';
 import axios from 'axios';
-import { number } from 'yargs';
-import { CataloguesResponse, ErrorResponse, LogInResponse } from '../types';
+import { CataloguesResponse, LogInResponse } from '../types';
 import { getFromStorage } from '../utils/localstorage';
 import { Vacancies } from '../types/vacancies';
 

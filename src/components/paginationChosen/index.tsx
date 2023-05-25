@@ -1,15 +1,9 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import './index.css';
 import { AppContext } from '../../store/context';
-import { Spinner } from '../spinner';
-import { ActionType, CardType } from '../../types';
-import { Card } from '../card';
+import { ActionType } from '../../types';
 import { CardList } from '../card-list';
-import useComponentDidMount from '../../hooks/useComponentDidMount';
-import { getVacancies } from '../../utils/getVacancies';
 import { Vacancy } from '../../types/vacancies';
-import { getFromStorage, removeFromStorage } from '../../utils/localstorage';
 
 export type PaginationProps = {
   itemsPerPage: number;
@@ -20,11 +14,8 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
   const [currentItems, setCurrentItems] = useState<Vacancy[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [beginOfSet, setBeginOfSet] = useState(1);
-  const [midOfSet, setMidOfSet] = useState(1);
-  const [endOfSet, setEndOfSet] = useState(state.vacsPage);
+  const [endOfSet, setEndOfSet] = useState(state.currentPage);
 
   useEffect(() => {
     if (chosen && chosen?.length > 0) {
@@ -59,27 +50,22 @@ export default function PaginatedChosen({ itemsPerPage, chosen }: PaginationProp
   };
 
   const load = () => {
-    let content: JSX.Element | null = null;
     if (chosen) {
-      content = isLoading ? <Spinner /> : <CardList vacancies={currentItems} />;
+      return <CardList vacancies={currentItems} />;
     }
-    return content;
+    return null;
   };
-  console.log(beginOfSet, endOfSet);
-  // removeFromStorage('chosen');
+
   return (
     <>
       {load()}
       <div className="paginate-count">
-        {/* {pageCountSet()} */}
         <ReactPaginate
           breakLabel={null}
           nextLabel=" >"
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={0}
-          initialPage={state.vacsPage}
-          // forcePage={state.vacsPage}
           pageCount={pageCount}
           previousLabel="< "
           renderOnZeroPageCount={null}

@@ -3,6 +3,7 @@
   justify-content: flex-end;
   margin: 30px 23px 0 0;
 }
+
 .page-count {
   align-items: center;
   font-weight: 400;
@@ -11,11 +12,13 @@
   color: #808080;
   margin: 0;
 }
+
 .pagination {
   display: flex;
   list-style-type: none;
   margin: 0 0 0 -15px;
 }
+
 .page-item {
   box-sizing: border-box;
   padding: 0px 8px;
@@ -32,9 +35,11 @@
   text-align: center;
   cursor: pointer;
 }
+
 .page-item:not(:last-child) {
   margin-right: 16px;
 }
+
 .page-item:active {
   color: #0064eb;
 }
