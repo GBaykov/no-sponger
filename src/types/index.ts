@@ -1,4 +1,4 @@
-import { Vacancies } from './vacancies';
+import { Vacancies, Vacancy } from './vacancies';
 
 export type AppState = {
   from: string;
@@ -13,6 +13,7 @@ export type AppState = {
   vacsResp: Vacancies | null;
   catalogues: CataloguesResponse | null;
   selectData: SelectedData | null;
+  currentVacancy: Vacancy | null;
 };
 export enum ActionType {
   SetTo,
@@ -27,7 +28,13 @@ export enum ActionType {
   SetVacsResp,
   SetCatalogues,
   SetSelectData,
+  SetCurrentVacancy,
 }
+export interface SetCurrentVacancy {
+  type: ActionType.SetCurrentVacancy;
+  payload: { currentVacancy: Vacancy };
+}
+
 export interface SetSelectData {
   type: ActionType.SetSelectData;
   payload: { selectData: SelectedData };
@@ -100,6 +107,7 @@ export type StateActions =
   | SetVacsResp
   | SetCatalogues
   | SetSelectData
+  | SetCurrentVacancy
   | SetVacsPage;
 
 export type CardType = {

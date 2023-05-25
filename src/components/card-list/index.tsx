@@ -14,7 +14,7 @@ export const CardList = ({ vacancies }: CardListProps) => {
   return (
     <section className="card-list">
       {vacancies?.map((vacancy) => {
-        return <Card key={vacancy.id} vacancy={vacancy} data-elem={`vacancy-${vacancy.id}`} />;
+        return <Card key={vacancy.id} vacancy={vacancy} />;
       })}
     </section>
   );

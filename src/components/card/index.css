@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+.blackCard {
+  height: 157px;
+}
+
 .card__head-title {
   font-family: 'Inter';
   font-style: normal;
@@ -19,6 +23,15 @@
   max-height: 24px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.blackTitle {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  /* line-height: 34px; */
+  color: #232134;
 }
 
 .card__content {
@@ -44,6 +57,10 @@
   gap: 8px;
 }
 
+.blackLocation {
+  line-height: 22px;
+}
+
 .card__head-star {
   cursor: pointer;
 }
@@ -56,6 +73,16 @@
   line-height: 20px;
   color: #232134;
 }
+
+.blackSalary {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+  color: #232134;
+}
+
 .card-text {
   font-family: 'Inter';
   font-style: normal;
@@ -71,4 +98,13 @@
   padding: 0;
   margin: 0;
   color: transparent;
+}
+
+.blackWork {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 20px;
+  color: #232134;
 }

@@ -1,0 +1,15 @@
+.vacancy-page {
+  max-height: 100%;
+}
+
+.vacancy-page__text {
+  padding: 24px;
+  gap: 20px;
+  max-width: 773px;
+  width: 100%;
+  height: 548px;
+  background: #ffffff;
+  border: 1px solid #eaebed;
+  border-radius: 12px;
+  box-sizing: border-box;
+}

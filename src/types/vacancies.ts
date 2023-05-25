@@ -1,5 +1,6 @@
 export type Vacancy = {
   id: number;
+  vacancyRichText?: string;
   id_client: number;
   payment_from: number;
   payment_to: number;

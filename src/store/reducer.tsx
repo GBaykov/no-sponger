@@ -14,6 +14,7 @@ export const initialState: AppState = {
   vacsPage: 0,
   vacsResp: null,
   selectData: null,
+  currentVacancy: null,
 };
 
 export function AppReducer(state: AppState, action: StateActions): AppState {
@@ -42,6 +43,8 @@ export function AppReducer(state: AppState, action: StateActions): AppState {
       return { ...state, catalogues: action.payload.catalogues };
     case ActionType.SetSelectData:
       return { ...state, selectData: action.payload.selectData };
+    case ActionType.SetCurrentVacancy:
+      return { ...state, currentVacancy: action.payload.currentVacancy };
     default:
       return state;
   }

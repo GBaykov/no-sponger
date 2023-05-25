@@ -10,6 +10,7 @@ import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { fetchCatalogues, fetchVacancies } from '../../services/Api';
 import { Spinner } from '../spinner';
 import { getVacancies } from '../../utils/getVacancies';
+import { useNavigate } from 'react-router-dom';
 
 export type FormData = {
   catalogue: string;
@@ -26,7 +27,7 @@ export const FilterForm = () => {
   // const [selectData, setSelectData] = useState<SelectedData | null>(null);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
-
+  const navigate = useNavigate();
   async function onFormSubmit(e: FormData) {
     dispatch({
       type: ActionType.SetVacsPage,
@@ -37,6 +38,13 @@ export const FilterForm = () => {
       payload: { isLoading: true },
     });
     const vacancies = await getVacancies(state);
+    if (vacancies.total === 0) {
+      dispatch({
+        type: ActionType.SetActiveLink,
+        payload: { activeLink: '/empty' },
+      });
+      navigate('/empty');
+    }
     dispatch({
       type: ActionType.SetVacsResp,
       payload: { vacsResp: vacancies },
@@ -139,10 +147,8 @@ export const FilterForm = () => {
         type: ActionType.SetCatalogues,
         payload: { catalogues: catalogues },
       });
-
       setIsLoading(false);
       setIsError(false);
-
       addFilterSelectData(catalogues);
     } catch {
       setIsLoading(false);

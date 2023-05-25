@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import react, { useState, useEffect, useContext } from 'react';
 import './index.css';
 import star from '../../assets/star.svg';
 import emptyStar from '../../assets/empty-star.svg';
@@ -6,16 +6,22 @@ import location from '../../assets/location.svg';
 import dot from '../../assets/dot.svg';
 import { Vacancy } from '../../types/vacancies';
 import { getFromStorage, removeFromStorage, setToStorage } from '../../utils/localstorage';
+import { ActionType } from '../../types';
+import { AppContext } from '../../store/context';
+import { useNavigate } from 'react-router-dom';
 
 export type CardProps = {
   vacancy: Vacancy;
+  isBlack?: boolean;
 };
 
-export const Card = ({ vacancy }: CardProps) => {
+export const Card = ({ vacancy, isBlack }: CardProps) => {
+  const { state, dispatch } = useContext(AppContext);
   const [isChosen, setIsChosen] = useState(false);
   const { profession, town, type_of_work, payment_to, payment_from, payment, currency, id } =
     vacancy;
-  // removeFromStorage('chosen');
+  const navigate = useNavigate();
+
   const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     setIsChosen(!isChosen);
@@ -55,36 +61,54 @@ export const Card = ({ vacancy }: CardProps) => {
   const PaymentBlock = () => {
     if (!payment_to && !payment_from && payment) {
       return (
-        <p className="info-salary">
+        <p className={`${isBlack ? 'info-salary blackSalary' : 'info-salary'}`}>
           з/п {payment} {currency}
         </p>
       );
     } else if (payment_to && payment_from && payment_from > 0 && payment_to > 0) {
       return (
-        <p className="info-salary">
+        <p className={`${isBlack ? 'info-salary blackSalary' : 'info-salary'}`}>
           з/п {payment_from} - {payment_to} {currency}
         </p>
       );
     } else if (!payment_to && payment_from) {
       return (
-        <p className="info-salary">
+        <p className={`${isBlack ? 'info-salary blackSalary' : 'info-salary'}`}>
           з/п от {payment_from} {currency}
         </p>
       );
     } else if (payment_to && !payment_from) {
       return (
-        <p className="info-salary">
+        <p className={`${isBlack ? 'info-salary blackSalary' : 'info-salary'}`}>
           з/п до {payment_to} {currency}
         </p>
       );
     }
   };
 
+  const onCardClick = () => {
+    dispatch({
+      type: ActionType.SetCurrentVacancy,
+      payload: { currentVacancy: vacancy },
+    });
+    dispatch({
+      type: ActionType.SetActiveLink,
+      payload: { activeLink: '/vacancy' },
+    });
+    navigate('/vacancy');
+  };
+
   return (
-    <div className="card">
+    <div
+      data-elem={`vacancy-${vacancy.id}`}
+      className={`${isBlack ? 'card blackCard' : 'card'}`}
+      onClick={() => onCardClick()}
+    >
       <div className="card__content">
         <div className="content__head ">
-          <p className="card__head-title">{profession}</p>
+          <p className={`${isBlack ? 'card__head-title blackTitle' : 'card__head-title'}`}>
+            {profession}
+          </p>
           <button
             onClick={(e) => onStarClick(e)}
             className="star-btn"
@@ -96,30 +120,20 @@ export const Card = ({ vacancy }: CardProps) => {
         </div>
         <div className="content__info ">
           {PaymentBlock()}
-          {/* {payment_to ? (
-            <p className="info-salary">
-              з/п {payment_from} - {payment_to} {currency}
-            </p>
-          ) : (
-            <p className="info-salary">
-              з/п от {payment_from} {currency}
-            </p>
-          )}
-          {payment_to && payment_from && (
-            <p className="info-salary">
-              з/п {payment_from} - {payment_to} {currency}
-            </p>
-          )} */}
-          {/* {!payment_to && payment_from && (
-            <p className="info-salary">
-              з/п от {payment_from} {currency}
-            </p>
-          )} */}
-
           <img src={dot} alt="dot" className="dot" />
-          <p className="info-typeofwork card-text">{type_of_work.title}</p>
+          <p
+            className={`${
+              isBlack ? 'info-typeofwork card-text blackWork' : 'info-typeofwork card-text'
+            }`}
+          >
+            {type_of_work.title}
+          </p>
         </div>
-        <div className="card__content-location ">
+        <div
+          className={`${
+            isBlack ? 'card__content-location blackLocation' : 'card__content-location'
+          }`}
+        >
           <img src={location} alt="location" className="location-icon" />
           <p className="card-text">{town.title}</p>
         </div>
