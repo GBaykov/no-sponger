@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import './index.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from '../pages/layout';
 import { MainPage } from '../pages/main';
 import { ChosenPage } from '../pages/chosen';

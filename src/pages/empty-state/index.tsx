@@ -4,7 +4,6 @@ import emptyStateImg from '../../assets/empty-state-2.png';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
-import { getVacancies } from '../../utils/getVacancies';
 
 export const EmptyState = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -17,7 +16,7 @@ export const EmptyState = () => {
     });
     navigate('/main');
   };
-  console.log(state.activeLink);
+
   useEffect(() => {
     dispatch({
       type: ActionType.SetSearchWord,

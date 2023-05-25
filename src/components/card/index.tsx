@@ -5,7 +5,7 @@ import emptyStar from '../../assets/empty-star.svg';
 import location from '../../assets/location.svg';
 import dot from '../../assets/dot.svg';
 import { Vacancy } from '../../types/vacancies';
-import { getFromStorage, removeFromStorage, setToStorage } from '../../utils/localstorage';
+import { getFromStorage, setToStorage } from '../../utils/localstorage';
 import { ActionType } from '../../types';
 import { AppContext } from '../../store/context';
 import { useNavigate } from 'react-router-dom';

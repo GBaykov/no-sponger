@@ -21,10 +21,8 @@ export type FormData = {
 export const FilterForm = () => {
   const { state, dispatch } = useContext(AppContext);
   const isComponentMounted = useComponentDidMount();
-  // const [catas, setCatas] = useState<CataloguesResponse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  // const [selectData, setSelectData] = useState<SelectedData | null>(null);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
   const navigate = useNavigate();
@@ -178,7 +176,7 @@ export const FilterForm = () => {
             <p className="form-text">Отрасль</p>
             {state.selectData && (
               <Select
-                data-elem={'industry-select'}
+                data-elem="industry-select"
                 clearable
                 value={form.values.catalogue}
                 name="catalogue"

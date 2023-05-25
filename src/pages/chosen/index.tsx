@@ -17,7 +17,6 @@ export const ChosenPage = () => {
     const vacs = getFromStorage('chosen');
     if (vacs) {
       const vacsArr: Vacancy[] = JSON.parse(vacs);
-      console.log(vacsArr);
       dispatch({
         type: ActionType.SetCurrentPage,
         payload: { currentPage: 1 },
@@ -30,7 +29,6 @@ export const ChosenPage = () => {
   }, []);
 
   const redirectToEmpty = () => {
-    console.log(state.chosen?.length);
     if (!state.chosen || state.chosen?.length === 0) {
       dispatch({
         type: ActionType.SetActiveLink,

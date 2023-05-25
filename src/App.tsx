@@ -4,7 +4,6 @@ import { AppContext } from './store/context';
 import { AppReducer, initialState } from './store/reducer';
 import { Router } from './router';
 import { Refresh_token, log_in } from './services/Api';
-import { async } from 'q';
 import { ActionType, LogInResponse } from './types';
 import useComponentDidMount from './hooks/useComponentDidMount';
 import { getFromStorage, setToStorage } from './utils/localstorage';
@@ -17,8 +16,6 @@ function App() {
     return { state, dispatch };
   }, [state, dispatch]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [errorText, setErrorText] = useState('');
   const isComponentMounted = useComponentDidMount();
 
   const getVacans = useCallback(async () => {
@@ -54,7 +51,6 @@ function App() {
           });
           setToStorage('logInResp', JSON.stringify(logInResp));
           setIsLoading(false);
-          setIsError(false);
         }
         if (storageData.ttl < Date.now() / 1000) {
           const freshData = await Refresh_token();
@@ -63,7 +59,6 @@ function App() {
             payload: { logInData: freshData },
           });
           setIsLoading(false);
-          setIsError(false);
         }
       } else {
         const logInResp = await log_in();
@@ -73,12 +68,10 @@ function App() {
         });
         setToStorage('logInResp', JSON.stringify(logInResp));
         setIsLoading(false);
-        setIsError(false);
       }
     } catch (err) {
       setIsLoading(false);
-      setIsError(true);
-      setErrorText(err as string);
+      throw new Error();
     }
     setIsLoading(false);
   };

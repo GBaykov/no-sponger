@@ -16,6 +16,7 @@ export type AppState = {
   currentVacancy: Vacancy | null;
   chosen: Vacancy[] | null;
 };
+
 export enum ActionType {
   SetTo,
   SetFrom,
@@ -32,10 +33,12 @@ export enum ActionType {
   SetCurrentVacancy,
   SetChosen,
 }
+
 export interface SetCurrentVacancy {
   type: ActionType.SetCurrentVacancy;
   payload: { currentVacancy: Vacancy };
 }
+
 export interface SetChosen {
   type: ActionType.SetChosen;
   payload: { chosen: Vacancy[] };
@@ -152,7 +155,9 @@ export type CatalogueResponse = {
     },
   ];
 };
+
 export type CataloguesResponse = [CatalogueResponse];
+
 export type SelectedData = {
   value: string;
   label: string;

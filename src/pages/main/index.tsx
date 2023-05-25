@@ -6,15 +6,11 @@ import { AppContext } from '../../store/context';
 import { Spinner } from '../../components/spinner';
 import { ActionType } from '../../types';
 import PaginatedItems from '../../components/pagination';
-import { useNavigate } from 'react-router-dom';
 import { getVacancies } from '../../utils/getVacancies';
-import useComponentDidMount from '../../hooks/useComponentDidMount';
 
 export const MainPage = () => {
   const { state, dispatch } = useContext(AppContext);
-  const navigate = useNavigate();
-  console.log(state.activeLink);
-  const isComponentMounted = useComponentDidMount();
+
   const getVacans = useCallback(async () => {
     dispatch({
       type: ActionType.SetIsLoading,
@@ -46,7 +42,6 @@ export const MainPage = () => {
         ) : (
           <section className="main__content-field">
             <Searchbar />
-            {/* {contentOnPage()} */}
             <PaginatedItems itemsPerPage={4} />
           </section>
         )}

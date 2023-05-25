@@ -12,16 +12,19 @@
     padding: 300px 112px 32px;
   }
 }
+
 @media (max-width: 1000px) {
   .main {
     padding: 25px 72px 22px;
   }
 }
+
 @media (max-width: 650px) {
   .main {
     padding: 20px 40px 22px;
   }
 }
+
 @media (max-width: 400px) {
   .main {
     padding: 20px 15px 22px;
@@ -41,6 +44,7 @@
     align-items: center;
   }
 }
+
 @media (max-width: 400px) {
   .main__content {
     gap: 8px;

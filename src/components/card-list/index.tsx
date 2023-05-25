@@ -1,10 +1,6 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import './index.css';
 import { Card } from '../card';
-import { ActionType, CardType } from '../../types';
-import { AppContext } from '../../store/context';
-import { getVacancies } from '../../utils/getVacancies';
-import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { Vacancy } from '../../types/vacancies';
 
 export type CardListProps = {
