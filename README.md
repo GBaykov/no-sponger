@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-## Link: https://646fea3a4810841556e450f0--spiffy-centaur-b75ec5.netlify.app
+## Links:  
+1. https://646fea3a4810841556e450f0--spiffy-centaur-b75ec5.netlify.app
+2. https://GBaykov.github.io/job-search-app/
 
 
 ## Available Scripts
