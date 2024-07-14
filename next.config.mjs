@@ -6,6 +6,15 @@ const nextConfig = {
       fullUrl: true,
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/vacancies',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

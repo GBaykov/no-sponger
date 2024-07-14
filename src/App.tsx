@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useReducer, useState } from 're
 import './App.css';
 import { AppContext } from './store/context';
 import { AppReducer, initialState } from './store/reducer';
-import { Router } from './router';
+
 import { Refresh_token, log_in } from './services/Api';
 import { ActionType, LogInResponse } from './types';
 import useComponentDidMount from './hooks/useComponentDidMount';
@@ -90,7 +90,7 @@ function App() {
 
   return (
     <AppContext.Provider value={contextValue}>
-      {isLoading ? <Spinner /> : <Router />}
+      {/* {isLoading ? <Spinner /> : <Router />} */}
     </AppContext.Provider>
   );
 }

@@ -1,14 +1,13 @@
 import React, { useContext, useCallback } from 'react';
 import './index.css';
 import logo from '../../assets/logo.svg';
-import { Link, useNavigate } from 'react-router-dom';
 
-import { AppContext } from '../../store/context';
+// import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
+import { AppContext } from '@/store/context';
 
 export const Header = () => {
   const { state, dispatch } = useContext(AppContext);
-  const navigate = useNavigate();
 
   const onLinkClick = useCallback(
     (link: string) => {
@@ -16,7 +15,7 @@ export const Header = () => {
         type: ActionType.SetActiveLink,
         payload: { activeLink: link },
       });
-      navigate(`${link}`);
+      // navigate(`${link}`);
     },
     [state.activeLink],
   );
@@ -28,7 +27,7 @@ export const Header = () => {
         </p>
         <nav className="content-nav nav">
           <ul className="nav-list list">
-            <li className="list-item" onClick={() => onLinkClick('/main')}>
+            {/* <li className="list-item" onClick={() => onLinkClick('/main')}>
               <Link to="/main" className={state.activeLink === '/main' ? 'activeLink' : ''}>
                 Поиск Вакансий
               </Link>
@@ -37,7 +36,7 @@ export const Header = () => {
               <Link to="/chosen" className={state.activeLink === '/chosen' ? 'activeLink' : ''}>
                 Избранное
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

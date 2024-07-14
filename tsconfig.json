@@ -27,8 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/features/MovieEntity/helpers",
-    "src/components/Sorters/1"
+    "./dist/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

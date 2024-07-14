@@ -10,7 +10,6 @@ import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { fetchCatalogues, fetchVacancies } from '../../services/Api';
 import { Spinner } from '../spinner';
 import { getVacancies } from '../../utils/getVacancies';
-import { useNavigate } from 'react-router-dom';
 
 export type FormData = {
   catalogue: string;
@@ -25,7 +24,7 @@ export const FilterForm = () => {
   const [isError, setIsError] = useState(false);
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
-  const navigate = useNavigate();
+
   async function onFormSubmit(e: FormData) {
     dispatch({
       type: ActionType.SetVacsPage,
@@ -41,7 +40,7 @@ export const FilterForm = () => {
         type: ActionType.SetActiveLink,
         payload: { activeLink: '/empty' },
       });
-      navigate('/empty');
+      // navigate('/empty');
     }
     dispatch({
       type: ActionType.SetVacsResp,

@@ -8,7 +8,6 @@ import { Vacancy } from '../../types/vacancies';
 import { getFromStorage, setToStorage } from '../../utils/localstorage';
 import { ActionType } from '../../types';
 import { AppContext } from '../../store/context';
-import { useNavigate } from 'react-router-dom';
 
 export type CardProps = {
   vacancy: Vacancy;
@@ -20,7 +19,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
   const [isChosen, setIsChosen] = useState(false);
   const { profession, town, type_of_work, payment_to, payment_from, payment, currency, id } =
     vacancy;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const onStarClick = (e: react.MouseEvent<HTMLImageElement | HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -97,7 +96,7 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
       type: ActionType.SetActiveLink,
       payload: { activeLink: '/vacancy' },
     });
-    navigate('/vacancy');
+    // navigate('/vacancy');
   };
 
   return (

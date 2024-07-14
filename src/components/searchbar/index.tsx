@@ -4,11 +4,10 @@ import search from '../../assets/search1.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
 import { getVacancies } from '../../utils/getVacancies';
-import { useNavigate } from 'react-router-dom';
 
 export const Searchbar = () => {
   const { state, dispatch } = useContext(AppContext);
-  const navigate = useNavigate();
+
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: ActionType.SetSearchWord,
@@ -33,7 +32,7 @@ export const Searchbar = () => {
         type: ActionType.SetActiveLink,
         payload: { activeLink: '/empty' },
       });
-      navigate('/empty');
+      // navigate('/empty');
     }
 
     dispatch({
