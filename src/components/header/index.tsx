@@ -9,21 +9,21 @@ import { AppContext } from '@/store/context';
 export const Header = () => {
   const { state, dispatch } = useContext(AppContext);
 
-  const onLinkClick = useCallback(
-    (link: string) => {
-      dispatch({
-        type: ActionType.SetActiveLink,
-        payload: { activeLink: link },
-      });
-      // navigate(`${link}`);
-    },
-    [state.activeLink],
-  );
+  // const onLinkClick = useCallback(
+  //   (link: string) => {
+  //     dispatch({
+  //       type: ActionType.SetActiveLink,
+  //       payload: { activeLink: link },
+  //     });
+  //     // navigate(`${link}`);
+  //   },
+  //   [state.activeLink],
+  // );
   return (
     <header className="header">
       <div className="header__content content">
         <p className="content-logo">
-          <img src={logo}></img>
+          <img src={logo.src}></img>
         </p>
         <nav className="content-nav nav">
           <ul className="nav-list list">
