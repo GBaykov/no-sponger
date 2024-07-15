@@ -1,14 +1,14 @@
 export const APP_ROUTES = {
-    HOME: '/',
-    MOVIES: '/movies',
-    RATED: '/rated',
+  HOME: '/',
+  VACANCIES: '/vacancies',
+  CHOSEN: '/chosen',
 } as const;
 
-export const API_BASE_URL = '/api';
+export const APP_API_BASE_URL = '/api';
 
-export const API_ROUTES = {
-    MOVIES: '/movies',
-    GENRES: '/genres',
-    IMAGES: '/images',
-    LOGOS: '/logos',
+export const APP_API_ROUTES = {
+  VACANCIES: '/vacancies',
+  LOGIN: '/login',
+  CATALOGUES: '/catalogues',
+  REFRESH: '/refresh',
 } as const;

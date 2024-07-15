@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AppContext } from '../../store/context';
 import { Spinner } from '../spinner';
@@ -48,7 +48,7 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
     <>
       {load()}
       <div className="paginate-count">
-        <ReactPaginate
+        {/* <ReactPaginate
           breakLabel={null}
           nextLabel=" >"
           onPageChange={handlePageClick}
@@ -70,7 +70,7 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
           breakClassName="page-item"
           breakLinkClassName="page-link"
           containerClassName="pagination"
-        />
+        /> */}
       </div>
     </>
   );

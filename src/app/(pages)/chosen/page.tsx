@@ -1,5 +1,7 @@
 'use client';
 
+import '@/styles/chosen.css';
+
 import PaginatedChosen from '@/components/paginationChosen';
 import useComponentDidMount from '@/hooks/useComponentDidMount';
 import { AppContext } from '@/store/context';

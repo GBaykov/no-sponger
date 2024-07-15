@@ -18,23 +18,23 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const isComponentMounted = useComponentDidMount();
 
-  const getVacans = useCallback(async () => {
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: true },
-    });
+  // const getVacans = useCallback(async () => {
+  //   dispatch({
+  //     type: ActionType.SetIsLoading,
+  //     payload: { isLoading: true },
+  //   });
 
-    const vacancies = await getVacancies(state);
-    dispatch({
-      type: ActionType.SetVacsResp,
-      payload: { vacsResp: vacancies },
-    });
+  //   const vacancies = await getVacancies(state);
+  //   dispatch({
+  //     type: ActionType.SetVacsResp,
+  //     payload: { vacsResp: vacancies },
+  //   });
 
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: false },
-    });
-  }, [state.vacsResp]);
+  //   dispatch({
+  //     type: ActionType.SetIsLoading,
+  //     payload: { isLoading: false },
+  //   });
+  // }, [state.vacsResp]);
 
   const logInStoraged = getFromStorage('logInResp');
 
@@ -82,11 +82,11 @@ function App() {
     }
   }, [isComponentMounted]);
 
-  useEffect(() => {
-    if (isComponentMounted) {
-      getVacans();
-    }
-  }, [isComponentMounted, state.vacsPage]);
+  // useEffect(() => {
+  //   if (isComponentMounted) {
+  //     getVacans();
+  //   }
+  // }, [isComponentMounted, state.vacsPage]);
 
   return (
     <AppContext.Provider value={contextValue}>

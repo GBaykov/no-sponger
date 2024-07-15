@@ -49,7 +49,7 @@ export const Searchbar = () => {
   return (
     <form className="searchbar-form" onSubmit={(e) => onFormSubmit(e)}>
       <div className="searchbar">
-        <img src={search} alt="" className="searchbar-icon" />
+        <img src={search.src} alt="" className="searchbar-icon" />
         <input
           data-elem="search-input"
           onChange={(e) => onInputChange(e)}

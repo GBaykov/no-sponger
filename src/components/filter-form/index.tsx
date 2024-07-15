@@ -70,6 +70,7 @@ export const FilterForm = () => {
   useEffect(() => {
     if (state.selectData) {
       const currentkey = state.selectData.find((item) => item.value === currentCatalogue)?.key;
+      console.log(currentkey);
       if (currentkey) {
         dispatch({
           type: ActionType.SetCatalogue,
@@ -167,7 +168,7 @@ export const FilterForm = () => {
             <p className="form-head-text">Фильтры</p>
             <button type="reset" className="reset-btn">
               Сбросить все
-              <img src={cross} />
+              <img src={cross.src} />
             </button>
           </div>
 
@@ -184,7 +185,7 @@ export const FilterForm = () => {
                 mb={20}
                 h={42}
                 p={0}
-                rightSection={<img src={arrowDown} width="14px" />}
+                rightSection={<img src={arrowDown.src} width="14px" />}
                 rightSectionWidth={30}
                 styles={{
                   rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },

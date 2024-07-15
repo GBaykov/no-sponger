@@ -4,6 +4,7 @@ import axios from 'axios';
 import { CataloguesResponse, LogInResponse } from '../types';
 import { getFromStorage } from '../utils/localstorage';
 import { Vacancies } from '../types/vacancies';
+import { APP_API_BASE_URL, APP_API_ROUTES } from '@/constants/app';
 
 const data = {
   params: {
@@ -21,7 +22,7 @@ const data = {
 
 export const log_in = async () => {
   try {
-    const response = await axios.get<LogInResponse>(`${API_URL}/2.0/oauth2/password/`, data);
+    const response = await axios.get<LogInResponse>(`${APP_API_BASE_URL}${APP_API_ROUTES.LOGIN}`);
     return response.data;
   } catch (err) {
     throw new Error(`${err} `);
@@ -45,10 +46,8 @@ const refreshRequest_data = {
 
 export const Refresh_token = async () => {
   try {
-    const response = await axios.get<LogInResponse>(
-      `${API_URL}/2.0/oauth2/refresh_token/`,
-      refreshRequest_data,
-    );
+    const response = await axios.get<LogInResponse>(`${APP_API_BASE_URL}${APP_API_ROUTES.REFRESH}`);
+
     return response.data;
   } catch (err) {
     throw new Error(`${err} `);
@@ -57,13 +56,10 @@ export const Refresh_token = async () => {
 
 export const fetchCatalogues = async () => {
   try {
-    const response = await axios.get<CataloguesResponse>(`${API_URL}/2.0/catalogues/`, {
-      headers: {
-        'x-secret-key': secretKey,
-        'X-Api-App-Id': client_secret,
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+    const response = await axios.get<CataloguesResponse>(
+      `${APP_API_BASE_URL}${APP_API_ROUTES.CATALOGUES}`,
+    );
+    console.log(response);
     return response.data;
   } catch (err) {
     throw new Error(`${err} `);
@@ -98,7 +94,7 @@ export const fetchVacancies = async (
     },
   };
   try {
-    const response = await axios.get<Vacancies>(`${API_URL}/2.0/vacancies/`, vacanciesRequestData);
+    const response = await axios.get<Vacancies>(`${APP_API_BASE_URL}${APP_API_ROUTES.VACANCIES}`);
     return response.data;
   } catch (err) {
     throw new Error(`${err} `);

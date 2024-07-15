@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://api.superjob.ru/';
+export const API_BASE_URL = 'https://api.superjob.ru';
 
 export const API_VERSION = '2.0';
 export const API_PROTOCOL = 'oauth2';

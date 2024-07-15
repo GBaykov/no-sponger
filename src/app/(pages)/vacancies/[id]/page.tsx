@@ -1,5 +1,7 @@
 'use client';
 
+import '@/styles/vacancy.css';
+
 import { Card } from '@/components/card';
 import { AppContext } from '@/store/context';
 import { TypographyStylesProvider } from '@mantine/core';

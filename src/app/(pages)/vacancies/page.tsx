@@ -1,5 +1,5 @@
 'use client';
-
+import '@/styles/vacancies.css';
 import { FilterForm } from '@/components/filter-form';
 import PaginatedItems from '@/components/pagination';
 import { Searchbar } from '@/components/searchbar';
@@ -38,7 +38,12 @@ const Page = () => {
     <main className="main">
       <div className="main__content">
         VACANCIES
-        {/* <FilterForm />
+        <FilterForm />
+        <section className="main__content-field">
+          <Searchbar />
+          <PaginatedItems itemsPerPage={4} />
+        </section>
+        {/*  <FilterForm />
         {state.isLoading ? (
           <Spinner />
         ) : (

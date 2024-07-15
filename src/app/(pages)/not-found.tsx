@@ -1,6 +1,7 @@
 'use client';
 
 import { FC, useContext, useEffect } from 'react';
+import '@/styles/not-found.css';
 
 import { AppContext } from '@/store/context';
 import { ActionType } from '@/types';
