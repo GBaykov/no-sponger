@@ -53,7 +53,8 @@ const VacancyPage = ({ params }: { params: { id: string } }) => {
       type: ActionType.SetIsLoading,
       payload: { isLoading: false },
     });
-  }, [id]);
+  }, [params]);
+
   useEffect(() => {
     getVacancy();
   }, []);
