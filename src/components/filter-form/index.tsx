@@ -185,7 +185,9 @@ export const FilterForm = () => {
                 mb={20}
                 h={42}
                 p={0}
-                rightSection={<img src={arrowDown.src} width="14px" />}
+                rightSection={
+                  state.isLoading ? <Spinner /> : <img src={arrowDown.src} width="14px" />
+                }
                 rightSectionWidth={30}
                 styles={{
                   rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },

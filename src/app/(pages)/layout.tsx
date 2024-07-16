@@ -61,14 +61,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(false);
   };
 
-  const setCatalogues = async () => {
-    const data = await fetchCatalogues();
-    console.log(data);
-    return data;
-  };
   useEffect(() => {
     setAccessData();
-    setCatalogues();
   }, []);
 
   // const navigate = useNavigate();
