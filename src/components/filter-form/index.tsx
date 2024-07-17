@@ -10,6 +10,7 @@ import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { fetchCatalogues, fetchVacancies } from '../../services/Api';
 import { Spinner } from '../spinner';
 import { getVacancies } from '../../utils/getVacancies';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export type FormData = {
   catalogue: string;
@@ -25,32 +26,43 @@ export const FilterForm = () => {
   const [currentCatalogue, setCurrentCatalogue] = useState('');
   const [currentCatKey, setCurrentKey] = useState(0);
 
+  const pathname = usePathname();
+
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+
   async function onFormSubmit(e: FormData) {
+    console.log('searchParams', searchParams);
+    const params = new URLSearchParams(searchParams);
+    params.delete('page');
+    params.set('page', '1');
+    replace(`${pathname}?${params.toString()}`);
+
     dispatch({
       type: ActionType.SetVacsPage,
       payload: { vacsPage: 0 },
     });
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: true },
-    });
-    const vacancies = await getVacancies(state);
-    if (vacancies.total === 0) {
-      dispatch({
-        type: ActionType.SetActiveLink,
-        payload: { activeLink: '/empty' },
-      });
-      // navigate('/empty');
-    }
-    dispatch({
-      type: ActionType.SetVacsResp,
-      payload: { vacsResp: vacancies },
-    });
+    // dispatch({
+    //   type: ActionType.SetIsLoading,
+    //   payload: { isLoading: true },
+    // });
+    // const vacancies = await getVacancies(state);
+    // if (vacancies.total === 0) {
+    //   dispatch({
+    //     type: ActionType.SetActiveLink,
+    //     payload: { activeLink: '/empty' },
+    //   });
+    //   // navigate('/empty');
+    // }
+    // dispatch({
+    //   type: ActionType.SetVacsResp,
+    //   payload: { vacsResp: vacancies },
+    // });
 
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: false },
-    });
+    // dispatch({
+    //   type: ActionType.SetIsLoading,
+    //   payload: { isLoading: false },
+    // });
   }
 
   const form = useForm<{
@@ -185,9 +197,7 @@ export const FilterForm = () => {
                 mb={20}
                 h={42}
                 p={0}
-                rightSection={
-                  state.isLoading ? <Spinner /> : <img src={arrowDown.src} width="14px" />
-                }
+                rightSection={<img src={arrowDown.src} width="14px" />}
                 rightSectionWidth={30}
                 styles={{
                   rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },
