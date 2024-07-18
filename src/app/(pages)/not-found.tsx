@@ -32,9 +32,7 @@ const NotFound: FC = () => {
         <div className="empty">
           <img src={emptyStateImg.src} alt="empty state" className="empty-img" />
           <p className="empty-text">Упс, здесь еще ничего нет!</p>
-          <button onClick={() => console.log(' Поиск Вакансий')} className="empty-btn">
-            Поиск Вакансий
-          </button>
+          <button className="empty-btn">Поиск Вакансий</button>
         </div>
       </div>
     </main>

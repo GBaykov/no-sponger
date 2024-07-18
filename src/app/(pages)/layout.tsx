@@ -46,7 +46,6 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         }
       } else {
         const logInResp = await log_in();
-        console.log(logInResp);
         dispatch({
           type: ActionType.SetlogInData,
           payload: { logInData: logInResp },

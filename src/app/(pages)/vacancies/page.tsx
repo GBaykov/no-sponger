@@ -18,7 +18,6 @@ const Page = () => {
     });
 
     const vacancies = await getVacancies(state);
-    console.log(vacancies);
     dispatch({
       type: ActionType.SetVacsResp,
       payload: { vacsResp: vacancies },
@@ -33,7 +32,6 @@ const Page = () => {
   useEffect(() => {
     getVacans();
   }, []);
-  console.log(state.vacsResp);
 
   return (
     <main className="main">
