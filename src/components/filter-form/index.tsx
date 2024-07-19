@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useCallback, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './index.css';
 import { Button, Group, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import cross from '../../assets/cross.svg';
 import arrowDown from '../../assets/down-errow.svg';
 import { AppContext } from '../../store/context';
-import { ActionType, CataloguesResponse } from '../../types';
+import { ActionType } from '../../types';
 import useComponentDidMount from '../../hooks/useComponentDidMount';
-import { fetchCatalogues, fetchVacancies } from '../../services/Api';
+import { fetchCatalogues } from '../../services/Api';
 import { Spinner } from '../spinner';
-import { getVacancies } from '../../utils/getVacancies';
+
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export type FormData = {
@@ -23,8 +23,7 @@ export const FilterForm = () => {
   const isComponentMounted = useComponentDidMount();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [currentCatalogue, setCurrentCatalogue] = useState('');
-  const [currentCatKey, setCurrentKey] = useState(0);
+
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -56,21 +55,6 @@ export const FilterForm = () => {
       setIsError(true);
     }
   };
-  console.log(state.catalogues);
-  console.log(state.selectData);
-  // const getInitialCatalogue = () => {
-  //   const catalogueKey = params.get('catalogues');
-
-  //   if (catalogueKey) {
-  //     const catalogue = state.catalogues?.find(
-  //       (item) => item.key === Number(catalogueKey),
-  //     )?.title_rus;
-  //     console.log(catalogue);
-  //     return catalogue || '';
-  //   } else {
-  //     return '';
-  //   }
-  // };
 
   const handleChange = (value: string | number, key: string) => {
     if (value && key) {
@@ -93,8 +77,7 @@ export const FilterForm = () => {
     }
   }, [state.catalogues]);
 
-  async function onFormSubmit(e: FormData) {
-    console.log(state.catalogue);
+  const onFormSubmit = (e: FormData) => {
     handleChange(state.catalogue, 'catalogues');
     handleChange(form.values.payment_from, 'payment_from');
     handleChange(form.values.payment_to, 'payment_to');
@@ -106,15 +89,11 @@ export const FilterForm = () => {
       type: ActionType.SetVacsPage,
       payload: { vacsPage: 0 },
     });
-  }
+  };
 
   useEffect(() => {
-    if (isComponentMounted) {
-      setCatalogues();
-      // const catalogue = getInitialCatalogue();
-      // setCurrentCatalogue(catalogue);
-    }
-  }, [isComponentMounted]);
+    setCatalogues();
+  }, []);
 
   const form = useForm<FormData>({
     initialValues: {
@@ -124,37 +103,32 @@ export const FilterForm = () => {
     },
   });
 
-  const onInputChange = useCallback(
-    (value: number | string | null, type: string) => {
-      if (type === 'catalogues') {
-        form.setFieldValue('catalogues', String(value));
-        const catalogueKey = state.catalogues?.find((item) => item.title_rus === value)?.key;
-        console.log(value, catalogueKey, state.catalogues);
-        dispatch({
-          type: ActionType.SetCatalogue,
-          payload: { catalogue: catalogueKey || 0 },
-        });
+  const onInputChange = (value: number | string | null, type: string) => {
+    if (type === 'catalogues') {
+      form.setFieldValue('catalogues', String(value));
+      const catalogueKey = state.catalogues?.find((item) => item.title_rus === value)?.key;
 
-        // setCurrentCatalogue(String(value));
-      }
+      dispatch({
+        type: ActionType.SetCatalogue,
+        payload: { catalogue: catalogueKey || 0 },
+      });
+    }
 
-      if (type === 'payment_from') {
-        if (value) {
-          form.setFieldValue('payment_from', Number(value));
-        } else {
-          form.setFieldValue('payment_from', '');
-        }
+    if (type === 'payment_from') {
+      if (value) {
+        form.setFieldValue('payment_from', Number(value));
+      } else {
+        form.setFieldValue('payment_from', '');
       }
-      if (type === 'payment_to') {
-        if (value) {
-          form.setFieldValue('payment_to', Number(value));
-        } else {
-          form.setFieldValue('payment_to', '');
-        }
+    }
+    if (type === 'payment_to') {
+      if (value) {
+        form.setFieldValue('payment_to', Number(value));
+      } else {
+        form.setFieldValue('payment_to', '');
       }
-    },
-    [state.from, state.to, dispatch],
-  );
+    }
+  };
 
   // const addFilterSelectData = (catalogues: CataloguesResponse) => {
   //   setIsLoading(true);
@@ -178,6 +152,17 @@ export const FilterForm = () => {
   //   }
   //   setIsLoading(false);
   // };
+  const onReset = () => {
+    form.reset();
+    form.setFieldValue('payment_from', '');
+    form.setFieldValue('payment_to', '');
+    dispatch({
+      type: ActionType.SetCatalogue,
+      payload: { catalogue: 0 },
+    });
+    replace(pathname);
+    console.log(pathname);
+  };
 
   return (
     <section className="form-block">
@@ -185,7 +170,7 @@ export const FilterForm = () => {
         <form onSubmit={form.onSubmit((e) => onFormSubmit(e))} onReset={form.onReset}>
           <div className="form-head">
             <p className="form-head-text">Фильтры</p>
-            <button type="reset" className="reset-btn">
+            <button onClick={() => onReset()} type="reset" className="reset-btn">
               Сбросить все
               <img src={cross.src} />
             </button>
