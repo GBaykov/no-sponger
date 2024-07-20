@@ -91,15 +91,25 @@ export const FilterForm = () => {
     });
   };
 
+  //  !!! when initially loading (rendering) a page, if there are search params,
+  // it is necessary to set the appropriate form fields in this way, and not through initialValues
   useEffect(() => {
     setCatalogues();
+    form.setFieldValue(
+      'payment_from',
+      params.get('payment_from') ? Number(params.get('payment_from')) : '',
+    );
+    form.setFieldValue(
+      'payment_to',
+      params.get('payment_to') ? Number(params.get('payment_to')) : '',
+    );
   }, []);
 
   const form = useForm<FormData>({
     initialValues: {
       catalogues: '',
-      payment_from: params.get('payment_from') ? Number(params.get('payment_from')) : '',
-      payment_to: params.get('payment_to') ? Number(params.get('payment_to')) : '',
+      payment_from: '',
+      payment_to: '',
     },
   });
 
@@ -160,8 +170,17 @@ export const FilterForm = () => {
       type: ActionType.SetCatalogue,
       payload: { catalogue: 0 },
     });
-    replace(pathname);
-    console.log(pathname);
+    params.delete('payment_from');
+    params.delete('payment_to');
+    params.delete('catalogues');
+
+    replace(`${pathname}?${params.toString()}`);
+
+    form.setValues({
+      catalogues: '',
+      payment_from: '',
+      payment_to: '',
+    });
   };
 
   return (
@@ -170,7 +189,12 @@ export const FilterForm = () => {
         <form onSubmit={form.onSubmit((e) => onFormSubmit(e))} onReset={form.onReset}>
           <div className="form-head">
             <p className="form-head-text">Фильтры</p>
-            <button onClick={() => onReset()} type="reset" className="reset-btn">
+            <button
+              onReset={() => onReset()}
+              onClick={() => onReset()}
+              type="reset"
+              className="reset-btn"
+            >
               Сбросить все
               <img src={cross.src} />
             </button>

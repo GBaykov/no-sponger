@@ -61,7 +61,7 @@
   background: #7b7c88;
 }
 
-.disabled {
+.disabled a {
   border: 1px solid #eaebed;
   color: #d5d6dc;
   cursor: no-drop;

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import ReactPaginate from 'react-paginate';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AppContext } from '../../store/context';
 import { Spinner } from '../spinner';
@@ -12,8 +13,22 @@ export type PaginationProps = {
 };
 
 export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
   const { state, dispatch } = useContext(AppContext);
   const [pageCount, setPageCount] = useState(0);
+
+  const vacsPage = Math.abs(Number(params.get('page'))) || 1;
+  const [initialPage, setInitialPage] = useState(vacsPage);
+
+  useEffect(() => {
+    const page = Number(vacsPage);
+    setInitialPage(page);
+    params.set('page', String(page));
+    replace(`${pathname}?${params}`);
+  }, [vacsPage]);
 
   useEffect(() => {
     if (state.vacsResp?.total) {
@@ -32,29 +47,38 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
 
   const handlePageClick = (event: SelectedItem) => {
     if (state.vacsResp?.total && event.selected < state.vacsResp?.total) {
-      dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected } });
+      dispatch({ type: ActionType.SetVacsPage, payload: { vacsPage: +event.selected + 1 } });
+      const page = event.selected + 1;
+      params.set('page', String(page));
+
+      replace(`${pathname}?${params.toString()}`);
     }
   };
 
-  const load = () => {
-    const vacancies = state.vacsResp?.objects;
-    if (vacancies) {
-      return <CardList vacancies={vacancies} />;
-    }
+  // const load = () => {
+  //   const vacancies = state.vacsResp?.objects;
+  //   if (vacancies) {
+  //     return <CardList vacancies={vacancies} />;
+  //   }
+  //   return null;
+  // };
+  console.log(vacsPage);
 
-    return null;
-  };
+  const pageRange = vacsPage > 1 && vacsPage < pageCount ? 2 : 3;
+  // const initialPage = vacsPage > 0 ?
+
   return (
     <>
-      {load()}
+      {/* {load()} */}
       <div className="paginate-count">
-        {/* <ReactPaginate
+        <ReactPaginate
           breakLabel={null}
           nextLabel=" >"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={2}
+          pageRangeDisplayed={pageRange}
           marginPagesDisplayed={0}
-          initialPage={state.vacsPage}
+          initialPage={initialPage - 1}
+          // forcePage={vacsPage}
           pageCount={pageCount}
           previousLabel="< "
           renderOnZeroPageCount={null}
@@ -70,7 +94,7 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
           breakClassName="page-item"
           breakLinkClassName="page-link"
           containerClassName="pagination"
-        /> */}
+        />
       </div>
     </>
   );

@@ -7,31 +7,16 @@ import { AppContext } from '@/store/context';
 import { ActionType } from '@/types';
 import { getVacancies } from '@/utils/getVacancies';
 import { useCallback, useContext, useEffect } from 'react';
+import { CardList } from '@/components/card-list';
 
 const Page = () => {
-  const { state, dispatch } = useContext(AppContext);
-
-  const getVacans = useCallback(async () => {
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: true },
-    });
-
-    const vacancies = await getVacancies(state);
-    dispatch({
-      type: ActionType.SetVacsResp,
-      payload: { vacsResp: vacancies },
-    });
-
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: false },
-    });
-  }, [state.vacsResp]);
-
-  useEffect(() => {
-    getVacans();
-  }, []);
+  // const load = () => {
+  //   const vacancies = state.vacsResp?.objects;
+  //   if (vacancies) {
+  //     return <CardList vacancies={vacancies} />;
+  //   }
+  //   return null;
+  // };
 
   return (
     <main className="main">
@@ -40,6 +25,7 @@ const Page = () => {
         <section className="main__content-field">
           <Searchbar />
           {/*  <Spinner /> */}
+          <CardList />
           <PaginatedItems itemsPerPage={4} />
         </section>
       </div>
