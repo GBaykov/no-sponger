@@ -1,4 +1,4 @@
-import { client_secret } from '../constants';
+// import { client_secret } from '../constants';
 import axios from 'axios';
 import { CataloguesResponse, LogInResponse } from '../types';
 import { getFromStorage } from '../utils/localstorage';
@@ -66,7 +66,7 @@ export const fetchVacancies = async (
       },
       headers: {
         method: 'GET',
-        'X-Api-App-Id': client_secret,
+
         Authorization: `Bearer ${access_token}`,
       },
     });
@@ -83,7 +83,7 @@ export const fetchVacancy = async (id: string) => {
       {
         headers: {
           method: 'GET',
-          'X-Api-App-Id': client_secret,
+
           Authorization: `Bearer ${access_token}`,
         },
       },

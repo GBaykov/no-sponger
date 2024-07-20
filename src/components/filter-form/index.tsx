@@ -81,7 +81,7 @@ export const FilterForm = () => {
     handleChange(state.catalogue, 'catalogues');
     handleChange(form.values.payment_from, 'payment_from');
     handleChange(form.values.payment_to, 'payment_to');
-    if (params.has('page')) params.set('page', '1');
+    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
     // replace(`${pathname}?${params}`, { scroll: false });
@@ -173,6 +173,7 @@ export const FilterForm = () => {
     params.delete('payment_from');
     params.delete('payment_to');
     params.delete('catalogues');
+    params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
 

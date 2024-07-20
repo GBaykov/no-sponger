@@ -15,7 +15,7 @@ export const GET = async (request: NextRequest, { params }: { params: { id: stri
   }
 
   const response = await fetch(`${API_ENDPOINTS.VACANCIES}/${id}`, {
-    headers: Authorization_header,
+    headers: { ...Authorization_header, 'X-Api-App-Id': client_secret },
   });
   const data = await response.json();
 

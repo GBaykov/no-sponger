@@ -24,7 +24,7 @@ const VacancyPage = ({ params }: { params: { id: string } }) => {
   //   });
 
   //   const vacancy = getVacancy(id);
-  //   console.log(vacancy);
+
   //   dispatch({
   //     type: ActionType.SetCurrentVacancy,
   //     payload: { currentVacancy: vacancy },

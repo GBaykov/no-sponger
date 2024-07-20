@@ -6,9 +6,14 @@ import { AppContext } from '@/store/context';
 import { ActionType } from '@/types';
 import { getVacancies } from '@/utils/getVacancies';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { Spinner } from '../spinner';
 
-export type CardListProps = {
-  vacancies: Vacancy[] | null;
+export type GetVacanciesProps = {
+  keyword: string;
+  payment_from: string;
+  payment_to: string;
+  catalogues: string;
+  page: string;
 };
 export const CardList = () => {
   const pathname = usePathname();
@@ -17,11 +22,36 @@ export const CardList = () => {
   const params = new URLSearchParams(searchParams);
   const { state, dispatch } = useContext(AppContext);
 
-  const getVacans = useCallback(async () => {
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: true },
-    });
+  const getVacans = useCallback(
+    async (data: GetVacanciesProps) => {
+      dispatch({
+        type: ActionType.SetIsLoading,
+        payload: { isLoading: true },
+      });
+
+      const vacancies = await getVacancies(data);
+
+      dispatch({
+        type: ActionType.SetVacsResp,
+        payload: { vacsResp: vacancies },
+      });
+
+      // const { page, ...values } = data;
+      // const nextPageVacancies = await getVacancies({ page: page + 1, ...values });
+      // dispatch({
+      //   type: ActionType.SetVacsNextpageResp,
+      //   payload: { vacsNextpageResp: nextPageVacancies },
+      // });
+
+      dispatch({
+        type: ActionType.SetIsLoading,
+        payload: { isLoading: false },
+      });
+    },
+    [state.vacsResp],
+  );
+
+  useEffect(() => {
     const values = {
       keyword: params.get('keyword') || '',
       payment_from: params.get('payment_from') || '',
@@ -30,29 +60,17 @@ export const CardList = () => {
       page: params.get('page') || '',
     };
 
-    const vacancies = await getVacancies(values);
-    console.log(vacancies);
-    dispatch({
-      type: ActionType.SetVacsResp,
-      payload: { vacsResp: vacancies },
-    });
-
-    dispatch({
-      type: ActionType.SetIsLoading,
-      payload: { isLoading: false },
-    });
-  }, [state.vacsResp]);
-
-  useEffect(() => {
-    getVacans();
-  }, []);
+    getVacans(values);
+  }, [searchParams]);
   // const vacancies = state.vacsResp?.objects;
 
   return (
     <section className="card-list">
-      {state.vacsResp?.objects?.map((vacancy) => {
-        return <Card key={vacancy.id} vacancy={vacancy} />;
-      })}
+      {state.isLoading && <Spinner />}
+      {!state.isLoading &&
+        state.vacsResp?.objects?.map((vacancy) => {
+          return <Card key={vacancy.id} vacancy={vacancy} />;
+        })}
     </section>
   );
 };

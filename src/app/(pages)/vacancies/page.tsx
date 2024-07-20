@@ -8,15 +8,10 @@ import { ActionType } from '@/types';
 import { getVacancies } from '@/utils/getVacancies';
 import { useCallback, useContext, useEffect } from 'react';
 import { CardList } from '@/components/card-list';
+import { Spinner } from '@/components/spinner';
 
 const Page = () => {
-  // const load = () => {
-  //   const vacancies = state.vacsResp?.objects;
-  //   if (vacancies) {
-  //     return <CardList vacancies={vacancies} />;
-  //   }
-  //   return null;
-  // };
+  const { state, dispatch } = useContext(AppContext);
 
   return (
     <main className="main">
@@ -26,7 +21,7 @@ const Page = () => {
           <Searchbar />
           {/*  <Spinner /> */}
           <CardList />
-          <PaginatedItems itemsPerPage={4} />
+          {state.vacsResp?.objects.length ? <PaginatedItems /> : <div />}
         </section>
       </div>
     </main>

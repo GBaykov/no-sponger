@@ -5,14 +5,10 @@ import './index.css';
 import { AppContext } from '../../store/context';
 import { Spinner } from '../spinner';
 import { ActionType } from '../../types';
-
 import { CardList } from '../card-list';
+import { items_per_page } from '@/constants';
 
-export type PaginationProps = {
-  itemsPerPage: number;
-};
-
-export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
+export default function PaginatedItems() {
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -21,25 +17,31 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
   const [pageCount, setPageCount] = useState(0);
 
   const vacsPage = Math.abs(Number(params.get('page'))) || 1;
-  const [initialPage, setInitialPage] = useState(vacsPage);
+  // const [initialPage, setInitialPage] = useState(vacsPage);
 
   useEffect(() => {
-    const page = Number(vacsPage);
-    setInitialPage(page);
-    params.set('page', String(page));
+    // const page = Number(vacsPage);
+    // setInitialPage(page);
+    params.set('page', String(vacsPage));
     replace(`${pathname}?${params}`);
   }, [vacsPage]);
 
+  console.log(state.vacsResp?.more);
+
   useEffect(() => {
-    if (state.vacsResp?.total) {
-      const divisible = state.vacsResp?.total;
-      if (divisible > 500) {
-        setPageCount(Math.ceil(500 / itemsPerPage));
-      } else {
-        setPageCount(Math.ceil(divisible / itemsPerPage));
+    if (state.vacsResp?.more) {
+      if (state.vacsResp?.total) {
+        const divisible = state.vacsResp?.total;
+        if (divisible > 500) {
+          setPageCount(Math.ceil(500 / items_per_page));
+        } else {
+          setPageCount(Math.ceil(divisible / items_per_page));
+        }
       }
+    } else {
+      setPageCount(Number(vacsPage));
     }
-  }, [state.vacsResp?.total]);
+  }, [state.vacsResp?.total, state.vacsResp?.more]);
 
   type SelectedItem = {
     selected: number;
@@ -55,21 +57,12 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
     }
   };
 
-  // const load = () => {
-  //   const vacancies = state.vacsResp?.objects;
-  //   if (vacancies) {
-  //     return <CardList vacancies={vacancies} />;
-  //   }
-  //   return null;
-  // };
-  console.log(vacsPage);
-
   const pageRange = vacsPage > 1 && vacsPage < pageCount ? 2 : 3;
-  // const initialPage = vacsPage > 0 ?
+  console.log(pageCount);
+  console.log(state.vacsResp?.total);
 
   return (
     <>
-      {/* {load()} */}
       <div className="paginate-count">
         <ReactPaginate
           breakLabel={null}
@@ -77,8 +70,8 @@ export default function PaginatedItems({ itemsPerPage }: PaginationProps) {
           onPageChange={handlePageClick}
           pageRangeDisplayed={pageRange}
           marginPagesDisplayed={0}
-          initialPage={initialPage - 1}
-          // forcePage={vacsPage}
+          //  initialPage={initialPage - 1}
+          forcePage={vacsPage - 1}
           pageCount={pageCount}
           previousLabel="< "
           renderOnZeroPageCount={null}

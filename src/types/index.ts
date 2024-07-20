@@ -9,6 +9,7 @@ export type AppState = {
   isLoading: boolean;
   // vacsPage: number;
   vacsResp: Vacancies | null;
+
   catalogues: CataloguesResponse | null;
   selectData: SelectedData | null;
   currentVacancy: Vacancy | null;
@@ -26,6 +27,7 @@ export enum ActionType {
   SetIsLoading,
   SetVacsPage,
   SetVacsResp,
+
   SetCatalogues,
   SetSelectData,
   SetCurrentVacancy,

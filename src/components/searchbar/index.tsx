@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './index.css';
 import search from '../../assets/search1.svg';
 import { AppContext } from '../../store/context';
@@ -14,11 +14,12 @@ export const Searchbar = () => {
   const { state, dispatch } = useContext(AppContext);
   const [keyword, setKeyWord] = useState('');
 
+  useEffect(() => {
+    const word = params.get('keyword');
+    setKeyWord(word || '');
+  }, []);
+
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // dispatch({
-    //   type: ActionType.SetSearchWord,
-    //   payload: { searhWord: e.currentTarget.value },
-    // });
     setKeyWord(e.currentTarget.value);
   };
 
@@ -29,42 +30,12 @@ export const Searchbar = () => {
     } else {
       params.delete('keyword');
     }
-
-    if (params.has('page')) params.set('page', '1');
-
+    params.set('page', '1');
     replace(`${pathname}?${params.toString()}`);
-    // replace(`${pathname}?${params}`, { scroll: false });
     dispatch({
       type: ActionType.SetVacsPage,
       payload: { vacsPage: 0 },
     });
-    // dispatch({
-    //   type: ActionType.SetVacsPage,
-    //   payload: { vacsPage: 0 },
-    // });
-    // dispatch({
-    //   type: ActionType.SetIsLoading,
-    //   payload: { isLoading: true },
-    // });
-
-    // const vacancies = await getVacancies(state);
-    // if (vacancies.total === 0) {
-    //   dispatch({
-    //     type: ActionType.SetActiveLink,
-    //     payload: { activeLink: '/empty' },
-    //   });
-    //   // navigate('/empty');
-    // }
-
-    // dispatch({
-    //   type: ActionType.SetVacsResp,
-    //   payload: { vacsResp: vacancies },
-    // });
-
-    // dispatch({
-    //   type: ActionType.SetIsLoading,
-    //   payload: { isLoading: false },
-    // });
   }
 
   return (
