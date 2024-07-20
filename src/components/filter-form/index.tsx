@@ -140,28 +140,6 @@ export const FilterForm = () => {
     }
   };
 
-  // const addFilterSelectData = (catalogues: CataloguesResponse) => {
-  //   setIsLoading(true);
-  //   if (catalogues) {
-  //     const filterSelectData: {
-  //       value: string;
-  //       label: string;
-  //       key: number;
-  //     }[] = catalogues?.map((catalogue) => {
-  //       const cata = {
-  //         value: catalogue.title_rus,
-  //         label: catalogue.title_rus,
-  //         key: catalogue.key,
-  //       };
-  //       return cata;
-  //     });
-  //     dispatch({
-  //       type: ActionType.SetSelectData,
-  //       payload: { selectData: filterSelectData },
-  //     });
-  //   }
-  //   setIsLoading(false);
-  // };
   const onReset = () => {
     form.reset();
     form.setFieldValue('payment_from', '');

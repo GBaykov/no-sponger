@@ -8,6 +8,7 @@ import { TypographyStylesProvider } from '@mantine/core';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { ActionType } from '@/types';
 import { fetchVacancy } from '@/services/Api';
+import { Spinner } from '@/components/spinner';
 
 const VacancyPage = ({ params }: { params: { id: string } }) => {
   const { state, dispatch } = useContext(AppContext);
@@ -70,14 +71,19 @@ const VacancyPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <main className="main vacancy-page">
-      <div className="vacancy-page__content">
-        {state.currentVacancy !== null && <Card vacancy={state.currentVacancy} isBlack={true} />}
-        <section className="vacancy-page__text">
-          <TypographyStylesProvider>
-            <div dangerouslySetInnerHTML={{ __html: `${state.currentVacancy?.vacancyRichText}` }} />
-          </TypographyStylesProvider>
-        </section>
-      </div>
+      {!state.isLoading && (
+        <div className="vacancy-page__content">
+          {state.currentVacancy !== null && <Card vacancy={state.currentVacancy} isBlack={true} />}
+          <section className="vacancy-page__text">
+            <TypographyStylesProvider>
+              <div
+                dangerouslySetInnerHTML={{ __html: `${state.currentVacancy?.vacancyRichText}` }}
+              />
+            </TypographyStylesProvider>
+          </section>
+        </div>
+      )}
+      {state.isLoading && <Spinner />}
     </main>
   );
 };
