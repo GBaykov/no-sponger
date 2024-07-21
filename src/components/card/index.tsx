@@ -34,6 +34,10 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
         const newVacsArr = vacsArr.filter((item) => item.id !== vacancy.id);
         const vacsToString = JSON.stringify(newVacsArr);
         setToStorage(`chosen`, vacsToString);
+        dispatch({
+          type: ActionType.SetChosen,
+          payload: { chosen: newVacsArr },
+        });
       }
     } else {
       const vacs = getFromStorage('chosen');
@@ -42,9 +46,17 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
         vacsArr.push(vacancy);
         const vacsToString = JSON.stringify(vacsArr);
         setToStorage(`chosen`, vacsToString);
+        dispatch({
+          type: ActionType.SetChosen,
+          payload: { chosen: [...vacsArr, vacancy] },
+        });
       } else {
         const vacancyToString = JSON.stringify(vacancy);
         setToStorage(`chosen`, `[${vacancyToString}]`);
+        dispatch({
+          type: ActionType.SetChosen,
+          payload: { chosen: [vacancy] },
+        });
       }
     }
     e.stopPropagation();
@@ -89,12 +101,12 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
     }
   };
 
-  const onVacancyClick = () => {
-    dispatch({
-      type: ActionType.SetCurrentVacancy,
-      payload: { currentVacancy: vacancy },
-    });
-  };
+  // const onVacancyClick = () => {
+  //   dispatch({
+  //     type: ActionType.SetCurrentVacancy,
+  //     payload: { currentVacancy: vacancy },
+  //   });
+  // };
 
   return (
     <div
