@@ -168,12 +168,7 @@ export const FilterForm = () => {
         <form onSubmit={form.onSubmit((e) => onFormSubmit(e))} onReset={form.onReset}>
           <div className="form-head">
             <p className="form-head-text">Фильтры</p>
-            <button
-              onReset={() => onReset()}
-              onClick={() => onReset()}
-              type="reset"
-              className="reset-btn"
-            >
+            <button onClick={() => onReset()} type="reset" className="reset-btn">
               Сбросить все
               <img src={cross.src} />
             </button>
