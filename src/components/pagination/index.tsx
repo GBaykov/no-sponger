@@ -3,9 +3,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import './index.css';
 import { AppContext } from '../../store/context';
-import { Spinner } from '../spinner';
 import { ActionType } from '../../types';
-import { CardList } from '../card-list';
 import { items_per_page } from '@/constants';
 
 export default function PaginatedItems() {
@@ -17,16 +15,11 @@ export default function PaginatedItems() {
   const [pageCount, setPageCount] = useState(0);
 
   const vacsPage = Math.abs(Number(params.get('page'))) || 1;
-  // const [initialPage, setInitialPage] = useState(vacsPage);
 
   useEffect(() => {
-    // const page = Number(vacsPage);
-    // setInitialPage(page);
     params.set('page', String(vacsPage));
     replace(`${pathname}?${params}`);
   }, [vacsPage]);
-
-  console.log(state.vacsResp?.more);
 
   useEffect(() => {
     if (state.vacsResp?.more) {
@@ -58,8 +51,6 @@ export default function PaginatedItems() {
   };
 
   const pageRange = vacsPage > 1 && vacsPage < pageCount ? 2 : 3;
-  console.log(pageCount);
-  console.log(state.vacsResp?.total);
 
   return (
     <>
@@ -70,7 +61,6 @@ export default function PaginatedItems() {
           onPageChange={handlePageClick}
           pageRangeDisplayed={pageRange}
           marginPagesDisplayed={0}
-          //  initialPage={initialPage - 1}
           forcePage={vacsPage - 1}
           pageCount={pageCount}
           previousLabel="< "

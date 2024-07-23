@@ -27,14 +27,19 @@ export const Header = () => {
         <nav className="content-nav nav">
           <ul className="nav-list list">
             <li className="list-item">
-              <Link href={`${APP_ROUTES.VACANCIES}`} className={isVacancies ? 'activeLink' : ''}>
+              <Link
+                href={`${APP_ROUTES.VACANCIES}`}
+                className={isVacancies ? 'header-link header__active-link' : 'header-link'}
+              >
                 Поиск Вакансий
               </Link>
             </li>
             <li className="list-item">
               <Link
                 href={`${APP_ROUTES.CHOSEN}`}
-                className={APP_ROUTES.CHOSEN === pathname ? 'activeLink' : ''}
+                className={
+                  APP_ROUTES.CHOSEN === pathname ? 'header-link header__active-link' : 'header-link'
+                }
               >
                 Избранное
               </Link>

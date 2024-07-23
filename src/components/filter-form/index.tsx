@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import './index.css';
 import { Button, Group, Select, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import cross from '../../assets/cross.svg';
 import arrowDown from '../../assets/down-errow.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
@@ -11,6 +10,8 @@ import { fetchCatalogues } from '../../services/Api';
 import { Spinner } from '../spinner';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { StyledButton } from '../button';
+import CrossIcon from '../icons/CrossIcon';
 
 export type FormData = {
   catalogues: string;
@@ -170,7 +171,7 @@ export const FilterForm = () => {
             <p className="form-head-text">Фильтры</p>
             <button onClick={() => onReset()} type="reset" className="reset-btn">
               Сбросить все
-              <img src={cross.src} />
+              <CrossIcon />
             </button>
           </div>
 
@@ -206,6 +207,7 @@ export const FilterForm = () => {
               w="100%"
               mb={8}
               h={42}
+              min={0}
               placeholder="От"
               styles={{
                 input: { borderRadius: '8px' },
@@ -232,6 +234,7 @@ export const FilterForm = () => {
               name="to"
               w="100%"
               h={42}
+              min={0}
               placeholder="До"
               styles={{
                 rightSection: { marginRight: '4px' },
@@ -252,19 +255,7 @@ export const FilterForm = () => {
             />
           </div>
           <Group position="center" mt={20}>
-            <Button
-              data-elem="search-button"
-              w="100%"
-              h={42}
-              type="submit"
-              bg="#5E96FC"
-              styles={{
-                label: { fontFamily: 'Inter', fontWeight: 'normal', fontSize: '14px' },
-                root: { borderRadius: '8px' },
-              }}
-            >
-              Применить
-            </Button>
+            <StyledButton text="Применить" mw="100%" h="40px" />
           </Group>
         </form>
       )}

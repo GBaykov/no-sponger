@@ -5,6 +5,7 @@ import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
 import { getVacancies } from '../../utils/getVacancies';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { StyledButton } from '../button';
 
 export const Searchbar = () => {
   const pathname = usePathname();
@@ -13,6 +14,7 @@ export const Searchbar = () => {
   const params = new URLSearchParams(searchParams);
   const { state, dispatch } = useContext(AppContext);
   const [keyword, setKeyWord] = useState('');
+  const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
     const word = params.get('keyword');
@@ -40,9 +42,11 @@ export const Searchbar = () => {
 
   return (
     <form className="searchbar-form" onSubmit={(e) => onFormSubmit(e)}>
-      <div className="searchbar">
+      <div className={isFocus ? 'input-focus searchbar' : ' searchbar'}>
         <img src={search.src} alt="" className="searchbar-icon" />
         <input
+          onFocusCapture={() => setIsFocus(true)}
+          onBlurCapture={() => setIsFocus(false)}
           data-elem="search-input"
           onChange={(e) => onInputChange(e)}
           type="text"
@@ -50,9 +54,8 @@ export const Searchbar = () => {
           className="searchbar-input"
           placeholder="Введите название вакансии"
         />
-        <button type="submit" className="searchbar-btn" data-elem="search-button">
-          Поиск
-        </button>
+
+        <StyledButton mw="83px" text="Поиск" h="32px" />
       </div>
     </form>
   );

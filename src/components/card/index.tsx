@@ -10,6 +10,7 @@ import { ActionType } from '../../types';
 import { AppContext } from '../../store/context';
 import { APP_ROUTES } from '@/constants/app';
 import Link from 'next/link';
+import StarIcon from '../icons/StarIcon';
 
 export type CardProps = {
   vacancy: Vacancy;
@@ -101,24 +102,13 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
     }
   };
 
-  // const onVacancyClick = () => {
-  //   dispatch({
-  //     type: ActionType.SetCurrentVacancy,
-  //     payload: { currentVacancy: vacancy },
-  //   });
-  // };
-
   return (
-    <div
-      data-elem={`vacancy-${vacancy.id}`}
-      className={`${isBlack ? 'card blackCard' : 'card'}`}
-      // onClick={() => onCardClick()}
-    >
+    <div data-elem={`vacancy-${vacancy.id}`} className={`${isBlack ? 'card blackCard' : 'card'}`}>
       <div className="card__content">
         <div className={`${isBlack ? 'content__head blackTitle' : 'content__head'}`}>
           <Link
             href={`${APP_ROUTES.VACANCIES}/${vacancy.id}`}
-            className={`${isBlack ? 'card__head-title blackTitle' : 'card__head-title'}`}
+            className={`${isBlack ? ' blackTitle' : 'card__head-title'}`}
           >
             {profession}
           </Link>
@@ -128,7 +118,8 @@ export const Card = ({ vacancy, isBlack }: CardProps) => {
             data-elem={`vacancy-${vacancy.id}-shortlist-button`}
           >
             {' '}
-            <img src={isChosen ? star.src : emptyStar.src} alt="star" className="card__head-star" />
+            {/* <img src={isChosen ? star.src : emptyStar.src} alt="star" className="card__head-star" /> */}
+            <StarIcon isChosen={isChosen} />
           </button>
         </div>
         <div className="content__info ">
