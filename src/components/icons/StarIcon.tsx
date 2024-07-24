@@ -5,7 +5,7 @@ const StarIcon = ({ isChosen }: { isChosen: boolean }) => (
       // stroke="#ACADB9"
       stroke={isChosen ? 'var(--blue-main-500)' : 'var(--grey-500)'}
       fill={isChosen ? 'var(--blue-main-500)' : ''}
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
   </svg>
 );

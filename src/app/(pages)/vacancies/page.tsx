@@ -19,7 +19,7 @@ const Page = () => {
         <FilterForm />
         <section className="main__content-field">
           <Searchbar />
-          {/*  <Spinner /> */}
+
           <CardList />
           {state.vacsResp?.objects.length ? <PaginatedItems /> : <div />}
         </section>

@@ -7,6 +7,7 @@ import { ActionType } from '@/types';
 import { getVacancies } from '@/utils/getVacancies';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Spinner } from '../spinner';
+import { EmptyMessage } from '../emptyMessage';
 
 export type GetVacanciesProps = {
   keyword: string;
@@ -36,13 +37,6 @@ export const CardList = () => {
         payload: { vacsResp: vacancies },
       });
 
-      // const { page, ...values } = data;
-      // const nextPageVacancies = await getVacancies({ page: page + 1, ...values });
-      // dispatch({
-      //   type: ActionType.SetVacsNextpageResp,
-      //   payload: { vacsNextpageResp: nextPageVacancies },
-      // });
-
       dispatch({
         type: ActionType.SetIsLoading,
         payload: { isLoading: false },
@@ -71,6 +65,7 @@ export const CardList = () => {
         state.vacsResp?.objects?.map((vacancy) => {
           return <Card key={vacancy.id} vacancy={vacancy} />;
         })}
+      {!state.isLoading && !state.vacsResp?.objects.length && <EmptyMessage />}
     </section>
   );
 };
