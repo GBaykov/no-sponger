@@ -2,6 +2,7 @@
   pointer-events: none;
   color: #acadb9;
   margin-right: 6px;
+  width: 30px;
 }
 
 .input {
@@ -18,4 +19,10 @@
 
 .input[data-mantine-stop-propagation='true'] + .rightSection > svg > path {
   stroke: var(--blue-main-500);
+}
+
+.wrapper {
+  padding: 0;
+  height: 42px;
+  width: 100%;
 }

@@ -1,11 +1,12 @@
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import '../styles/index.css';
 import '../styles/normalize.css';
 import '../styles/App.css';
 const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ weight: ['400', '500', '600'], subsets: ['latin'] });
 export const metadata = {
-  title: 'Job Searcher',
-  description: 'Job Searcher - the ultimate jobs search app!',
+  title: 'NoSponger',
+  description: 'NoSponger - the ultimate jobs search app!',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

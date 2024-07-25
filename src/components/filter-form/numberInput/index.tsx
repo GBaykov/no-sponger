@@ -1,5 +1,4 @@
 import { NumberInput } from '@mantine/core';
-import { UseFormReturnType } from '@mantine/form';
 import { FC } from 'react';
 import classes from './numberInput.module.css';
 

@@ -6,7 +6,6 @@ import { ActionType } from '../../types';
 import { getVacancies } from '../../utils/getVacancies';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { StyledButton } from '../button';
-import SearchIcon from '../icons/SearchIcon';
 
 export const Searchbar = () => {
   const pathname = usePathname();
@@ -44,8 +43,7 @@ export const Searchbar = () => {
   return (
     <form className="searchbar-form" onSubmit={(e) => onFormSubmit(e)}>
       <div className={isFocus ? 'input-focus searchbar' : ' searchbar'}>
-        <img src={search.src} alt="" className="searchbar-icon" />
-
+        <img src={search.src} alt="searchbar icon" className="searchbar-icon" />
         <input
           onFocusCapture={() => setIsFocus(true)}
           onBlurCapture={() => setIsFocus(false)}
@@ -56,7 +54,6 @@ export const Searchbar = () => {
           className="searchbar-input"
           placeholder="Введите название вакансии"
         />
-
         <StyledButton mw="83px" text="Поиск" h="32px" />
       </div>
     </form>

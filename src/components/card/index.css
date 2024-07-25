@@ -1,7 +1,6 @@
 .card {
   width: 100%;
   max-width: 773px;
-  /* max-height: 137px; */
   background: #ffffff;
   border: 1px solid #eaebed;
   border-radius: 12px;
@@ -13,15 +12,12 @@
 @media (max-width: 750px) {
   .card {
     padding: 12px;
-    /* max-height: 187px; */
   }
 }
 
 .blackCard {
   min-height: fit-content;
   height: 100%;
-  /* height: 187px; */
-  /* max-height: 217px; */
 }
 
 .card__head-title {
@@ -31,7 +27,6 @@
   font-size: 20px;
   line-height: 24px;
   color: var(--blue-main-500);
-  /* max-height: 24px; */
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -58,8 +53,6 @@
     font-size: 22px;
     width: 264px;
     height: 100%;
-    /* overflow: hidden;
-    text-overflow: ellipsis; */
   }
 }
 

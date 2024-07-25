@@ -18,22 +18,13 @@ export const SelectInput: FC<SelectInputProps> = ({ formValue, onChangeHandler, 
       value={formValue}
       name="catalogues"
       onChange={(e) => onChangeHandler(e, 'catalogues')}
-      w="100%"
-      // mb={20}
-      h={42}
-      p={0}
       rightSection={<ArrowIcon />}
-      rightSectionWidth={30}
       classNames={{
         input: classes.input,
         rightSection: classes.rightSection,
         wrapper: classes.wrapper,
         root: classes.root,
       }}
-      // styles={{
-      //   rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },
-      //   input: { borderRadius: '8px' },
-      // }}
       placeholder="Выберете отрасль"
       data={data}
     />

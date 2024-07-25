@@ -83,7 +83,6 @@ export const FilterForm = () => {
     params.set('page', '1');
 
     replace(`${pathname}?${params.toString()}`);
-    // replace(`${pathname}?${params}`, { scroll: false });
     dispatch({
       type: ActionType.SetVacsPage,
       payload: { vacsPage: 0 },
@@ -183,25 +182,6 @@ export const FilterForm = () => {
                   formValue={form.values.catalogues}
                   onChangeHandler={onInputChange}
                 />
-                // <Select
-                //   data-elem="industry-select"
-                //   clearable
-                //   value={form.values.catalogues}
-                //   name="catalogues"
-                //   onChange={(e) => onInputChange(e, 'catalogues')}
-                //   w="100%"
-                //   // mb={20}
-                //   h={42}
-                //   p={0}
-                //   rightSection={<ArrowIcon />}
-                //   rightSectionWidth={30}
-                //   styles={{
-                //     rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },
-                //     input: { borderRadius: '8px' },
-                //   }}
-                //   placeholder="Выберете отрасль"
-                //   data={state.selectData}
-                // />
               )}
             </Stack>
             <Stack style={{ gap: '8px' }}>
