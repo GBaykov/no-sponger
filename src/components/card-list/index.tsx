@@ -63,7 +63,7 @@ export const CardList = () => {
       {state.isLoading && <Spinner />}
       {!state.isLoading &&
         state.vacsResp?.objects?.map((vacancy) => {
-          return <Card key={vacancy.id} vacancy={vacancy} />;
+          return <Card isBlack={false} key={vacancy.id} vacancy={vacancy} />;
         })}
       {!state.isLoading && !state.vacsResp?.objects.length && <EmptyMessage />}
     </section>

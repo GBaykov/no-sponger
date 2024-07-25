@@ -27,6 +27,8 @@ export const SelectInput: FC<SelectInputProps> = ({ formValue, onChangeHandler, 
       classNames={{
         input: classes.input,
         rightSection: classes.rightSection,
+        wrapper: classes.wrapper,
+        root: classes.root,
       }}
       // styles={{
       //   rightSection: { pointerEvents: 'none', color: '#ACADB9', marginRight: '6px' },

@@ -1,19 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './index.css';
-import { Group, Select, Stack } from '@mantine/core';
+import { Group, Stack } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import arrowDown from '../../assets/down-errow.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
-import useComponentDidMount from '../../hooks/useComponentDidMount';
 import { fetchCatalogues } from '../../services/Api';
 import { Spinner } from '../spinner';
-
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { StyledButton } from '../button';
 import CrossIcon from '../icons/CrossIcon';
 import { StyledNumberInput } from './numberInput';
-import ArrowIcon from '../icons/ArrowIcon';
 import { SelectInput } from './selectInput';
 
 export type FormData = {

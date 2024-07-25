@@ -11,10 +11,11 @@
   border: 1px solid var(--blue-main-500);
 }
 
-.input:focus [data-expanded='true'] {
-  /* color: var(--blue-main-500);
+.input[data-mantine-stop-propagation='true'] + .rightSection svg {
   transition: all 300ms;
-  transform: rotate(180deg); */
+  transform: rotate(180deg);
+}
 
-  background: red;
+.input[data-mantine-stop-propagation='true'] + .rightSection > svg > path {
+  stroke: var(--blue-main-500);
 }
