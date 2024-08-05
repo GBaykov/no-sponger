@@ -62,7 +62,7 @@ export default function PaginatedItems() {
         marginPagesDisplayed={0}
         forcePage={vacsPage - 1}
         pageCount={pageCount}
-        previousLabel="<div "
+        previousLabel="< "
         renderOnZeroPageCount={null}
         className="pagination"
         activeClassName="active-page"
