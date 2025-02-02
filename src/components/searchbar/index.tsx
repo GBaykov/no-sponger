@@ -3,7 +3,6 @@ import './index.css';
 import search from '../../assets/search.svg';
 import { AppContext } from '../../store/context';
 import { ActionType } from '../../types';
-import { getVacancies } from '../../utils/getVacancies';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { StyledButton } from '../button';
 

@@ -4,7 +4,7 @@ import { FilterForm } from '@/components/filter-form';
 import PaginatedItems from '@/components/pagination';
 import { Searchbar } from '@/components/searchbar';
 import { AppContext } from '@/store/context';
-import { useContext } from 'react';
+import { Suspense, useContext } from 'react';
 import { CardList } from '@/components/card-list';
 
 const VacanciesPage = () => {
@@ -13,10 +13,19 @@ const VacanciesPage = () => {
   return (
     <main className="main">
       <div className="main__content">
-        <FilterForm />
+        <Suspense>
+          {' '}
+          <FilterForm />
+        </Suspense>
+
         <section className="main__content-field">
-          <Searchbar />
-          <CardList />
+          <Suspense>
+            {' '}
+            <Searchbar />
+          </Suspense>
+          <Suspense>
+            <CardList />
+          </Suspense>
           {state.vacsResp?.objects.length ? <PaginatedItems /> : <div />}
         </section>
       </div>

@@ -13,7 +13,7 @@ export const log_in = async () => {
   }
 };
 
-const fallbackJson: string = '{ "access_resp": "null" }';
+const fallbackJson = '{ "access_resp": "null" }';
 const access_resp = getFromStorage('logInResp') || fallbackJson;
 const refresh_token: string = access_resp !== null ? JSON.parse(access_resp).refresh_token : '';
 const access_token: string = access_resp !== null ? JSON.parse(access_resp).access_token : '';

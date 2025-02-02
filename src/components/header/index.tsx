@@ -6,7 +6,7 @@ import logo from '../../assets/logo.svg';
 
 import Link from 'next/link';
 import { APP_ROUTES } from '@/constants/app';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export const Header = () => {
   const pathname = usePathname();
